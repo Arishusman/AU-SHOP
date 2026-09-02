@@ -1,0 +1,12 @@
+export type CartItem={id:number;name:string;price:number;slug:string;qty:number;use?:string;benefit?:string;image?:string};
+const KEY='au-cart-v1'; const THEME='au-theme';
+export const getCart=():CartItem[]=>{if(typeof window==='undefined')return [];try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}};
+export const setCart=(items:CartItem[])=>{localStorage.setItem(KEY,JSON.stringify(items));window.dispatchEvent(new Event('cart:changed'))};
+export const addCart=(p:any)=>{const c=getCart();const i=c.find(x=>x.id===p.id);if(i)i.qty++;else c.push({id:p.id,name:p.name,price:p.price,slug:p.slug,qty:1,use:p.use,benefit:p.benefit});setCart(c)};
+export const removeCart=(id:number)=>setCart(getCart().filter(x=>x.id!==id));
+export const updateQty=(id:number,qty:number)=>setCart(getCart().map(x=>x.id===id?{...x,qty:Math.max(1,qty)}:x));
+export const cartCount=()=>getCart().reduce((a,b)=>a+b.qty,0);
+export const money=(n:number)=>`Rs ${n.toLocaleString('en-PK')}`;
+export const slugify=(s:string)=>s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+export const themeInit=()=>{const t=localStorage.getItem(THEME)||'dark';document.documentElement.dataset.theme=t;};
+export const toggleTheme=()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem(THEME,next)};

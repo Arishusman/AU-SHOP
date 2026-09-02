@@ -1,0 +1,1 @@
+export default function Location(){return <main className="container page"><div className="eyebrow">Find us</div><h1>Location</h1><div className="map"><iframe src="https://www.google.com/maps?q=Lahore%2C%20Pakistan&output=embed" loading="lazy"/></div><p className="muted">Map placeholder: replace the query with the exact store address before launch.</p></main>}

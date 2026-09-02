@@ -1,0 +1,1 @@
+import {Suspense} from 'react'; import CheckoutClient from '@/components/CheckoutClient'; export default function Checkout(){return <main className="container page"><div className="eyebrow">Secure checkout</div><h1 style={{fontSize:54}}>Checkout</h1><Suspense fallback={<div className="empty">Loading checkout…</div>}><CheckoutClient/></Suspense></main>}

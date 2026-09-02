@@ -1,0 +1,1 @@
+import CartClient from '@/components/CartClient'; export default function Cart(){return <main className="container page"><div className="eyebrow">Shopping bag</div><h1 style={{fontSize:54}}>Your cart</h1><CartClient/></main>}
