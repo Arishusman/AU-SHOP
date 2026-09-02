@@ -33,7 +33,7 @@ export function CategoryBlock({
       </div>
 
       <div className="grid">
-        {list.slice(0, 2).map((p) => (
+        {list.slice(0, 2).map((p: any) => (
           <ProductCard key={p.id} p={p} />
         ))}
       </div>
