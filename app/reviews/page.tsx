@@ -50,7 +50,7 @@ export default function Reviews(){
                 {"★".repeat(Math.max(0,Math.min(5,Number(r.rating)||0)))}
               </div>
               <p>{r.body}</p>
-              <b>{r.reviewer_name}</b>
+              
             </article>
           ))}
         </div>
