@@ -9,6 +9,7 @@ export default function Account(){
   const[step,setStep]=useState(0);
   const[email,setEmail]=useState('');
   const[code,setCode]=useState('');
+  const[challenge,setChallenge]=useState('');
   const[logged,setLogged]=useState(()=>typeof window!=='undefined'&&localStorage.getItem('au-user')==='1');
   const[pass,setPass]=useState('');
   const[loading,setLoading]=useState(false);
@@ -25,7 +26,7 @@ export default function Account(){
           const r=await fetch(API+'/api/auth/send-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
           const j=await r.json();
           if(!r.ok)throw new Error(j.error||'Could not send verification code');
-          setStep(1);
+          setChallenge(j.data?.challenge||"");setStep(1);
         }catch(e){alert(e instanceof Error?e.message:'Could not send verification code')}
         finally{setLoading(false)}
       }}>{loading?'Sending...':'Send code'}</button>
@@ -37,7 +38,7 @@ export default function Account(){
       <button className="btn primary" disabled={code.length!==6||loading} onClick={async()=>{
         try{
           setLoading(true);
-          const r=await fetch(API+'/api/auth/verify-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,code})});
+          const r=await fetch(API+'/api/auth/verify-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,code,challenge})});
           const j=await r.json();
           if(!r.ok)throw new Error(j.error||'Invalid verification code');
           setStep(2);
