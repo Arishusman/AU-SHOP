@@ -145,7 +145,11 @@ export default function CheckoutClient(){
         </button>
 
         {method==='PAID'&&<div className="notice">
-          Upload your payment screenshot and enter the Transaction ID.
+          <div style={{marginBottom:14}}><b>Online Payment Details</b></div>
+          <div className="row"><span>Bank</span><b>Sadapay</b></div>
+          <div className="row"><span>Account Name</span><b>Muhammad Usman</b></div>
+          <div className="row"><span>IBAN</span><b>PK20SADA0000003344473236</b></div>
+          <p style={{marginTop:14}}>Please transfer the exact order total to the account above. After payment, upload your payment screenshot and enter the Transaction ID below.</p>
 
           <input
             type="file"
