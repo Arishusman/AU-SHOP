@@ -31,7 +31,7 @@ export function ReviewForm({productId}:{productId:number}){
           email:email.trim(),
           rating,
           comment:comment.trim(),
-          approved:false
+          approved:true
         })
       });
 
@@ -46,7 +46,7 @@ export function ReviewForm({productId}:{productId:number}){
       setEmail('');
       setRating(5);
       setComment('');
-      setMessage('Thank you! Your review has been submitted for approval.');
+      setMessage('Thank you! Your review has been submitted.');
     }catch{
       setMessage('Unable to connect to the server. Please try again.');
     }finally{
