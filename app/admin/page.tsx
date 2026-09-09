@@ -164,7 +164,7 @@ function HomePageCategories({categories}:{categories:any[]}){
     await saveOrder(next);
   };
 
-  const available=categories.filter(c=>!items.some(x=>String(x.id)===String(c.id)));
+  const available=dbCategories.filter(c=>!items.some(x=>String(x.id)===String(c.id)));
 
   return <div>
     <div className="sectionHead">

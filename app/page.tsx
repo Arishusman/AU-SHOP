@@ -11,6 +11,17 @@ async function getHomeConfig(){
   }
 }
 
+async function getHomeCategories(){
+  try{
+    const res=await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`,{cache:'no-store'});
+    if(!res.ok)return [];
+    const json=await res.json();
+    return Array.isArray(json?.data)?json.data:[];
+  }catch{
+    return [];
+  }
+}
+
 async function getHomeProducts(){
   try{
     const res=await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`,{cache:'no-store'});
@@ -32,6 +43,27 @@ async function getHomeProducts(){
   }
 }
 
-export default async function Home(){
+export default async function Home(){ const dbCategories=await getHomeCategories();
   const homeProducts=await getHomeProducts(); const homeReviews=await getHomeReviews(); const homeConfig=await getHomeConfig();
-  return <main className="container"><section className="hero"><div className="heroCard"><div className="eyebrow">A.U SHOP · THE BRAND SHOPPING STORE</div><h1>Beauty, care & everyday essentials — elevated.</h1><p>Shop a curated collection of skincare, beauty, hair care, feminine care and personal essentials with a premium, simple shopping experience.</p><div style={{display:'flex',gap:10,flexWrap:'wrap'}}><Link href="/products" className="btn primary">Shop all products</Link><Link href="/categories" className="btn ghost">Explore categories</Link></div></div><div className="heroSide"><div><div className="eyebrow">Why A.U SHOP</div><h2 style={{fontSize:36}}>Quality products. Clear pricing. Easy tracking.</h2><p className="muted">A modern storefront designed mobile-first, with fast discovery, simple checkout and order status visibility.</p></div><div style={{display:'grid',gap:10}}><div className="notice"><ShieldCheck size={18}/> Curated catalog</div><div className="notice"><Truck size={18}/> Delivery tracking</div><div className="notice"><Star size={18}/> Customer reviews</div></div></div></section><SearchBar/>{homeConfig.categories.map((hc:any)=>{const c=categories.find((x:any)=>String(x.id)===String(hc.category_id));if(!c)return null;const ids=homeConfig.products.filter((p:any)=>String(p.category_id)===String(c.id)).sort((a:any,b:any)=>Number(a.sort_order)-Number(b.sort_order)).map((p:any)=>String(p.product_id));const selected=ids.length?homeProducts.filter((p:any)=>ids.includes(String(p.id))):[];return <CategoryBlock key={c.id} cat={c} products={selected}/>})}<section className="section"><div className="sectionHead"><div><div className="eyebrow">Community notes</div><h2>What shoppers say</h2></div><Link href="/reviews" className="btn ghost">View more</Link></div><div className="reviews">{homeReviews.length ? homeReviews.map((r:any)=><article className="review" key={r.id}><div className="stars">{"★".repeat(Math.max(0,Math.min(5,Number(r.rating)||0)))}</div><p>{r.comment || r.body || ""}</p></article>) : <p className="muted">No reviews yet.</p>}</div></section><section className="section"><div className="heroSide"><div><div className="eyebrow">Need help?</div><h2>Chat with A.U SHOP</h2><p className="muted">Ask about products, availability or your order.</p></div><a className="btn primary" href="https://wa.me/923160478318?text=hello%2C%20Can%20I%20get%20more%20information%20about%20this" target="_blank"><MessageCircle size={17}/> WhatsApp us</a></div></section><footer className="footer">© {new Date().getFullYear()} A.U SHOP · The Brand Shopping Store · <a href="mailto:arishusman.web@gmail.com" style={{color:'var(--text)'}}>arishusman.web@gmail.com</a></footer></main>}
+  return <main className="container"><section className="hero"><div className="heroCard"><div className="eyebrow">A.U SHOP · THE BRAND SHOPPING STORE</div><h1>Beauty, care & everyday essentials — elevated.</h1><p>Shop a curated collection of skincare, beauty, hair care, feminine care and personal essentials with a premium, simple shopping experience.</p><div style={{display:'flex',gap:10,flexWrap:'wrap'}}><Link href="/products" className="btn primary">Shop all products</Link><Link href="/categories" className="btn ghost">Explore categories</Link></div></div><div className="heroSide"><div><div className="eyebrow">Why A.U SHOP</div><h2 style={{fontSize:36}}>Quality products. Clear pricing. Easy tracking.</h2><p className="muted">A modern storefront designed mobile-first, with fast discovery, simple checkout and order status visibility.</p></div><div style={{display:'grid',gap:10}}><div className="notice"><ShieldCheck size={18}/> Curated catalog</div><div className="notice"><Truck size={18}/> Delivery tracking</div><div className="notice"><Star size={18}/> Customer reviews</div></div></div></section><SearchBar/>{homeConfig.categories.map((hc:any)=>{
+  const dbCat=dbCategories.find((x:any)=>String(x.id)===String(hc.category_id));
+  if(!dbCat)return null;
+
+  const c=categories.find((x:any)=>
+    String(x.id)===String(dbCat.slug) ||
+    String(x.name).trim().toLowerCase()===String(dbCat.name).trim().toLowerCase()
+  );
+
+  if(!c)return null;
+
+  const ids=homeConfig.products
+    .filter((p:any)=>String(p.category_id)===String(hc.category_id))
+    .sort((a:any,b:any)=>Number(a.sort_order)-Number(b.sort_order))
+    .map((p:any)=>String(p.product_id));
+
+  const selected=ids.length
+    ? homeProducts.filter((p:any)=>ids.includes(String(p.id)))
+    : [];
+
+  return <CategoryBlock key={c.id} cat={c} products={selected}/>;
+})}<section className="section"><div className="sectionHead"><div><div className="eyebrow">Community notes</div><h2>What shoppers say</h2></div><Link href="/reviews" className="btn ghost">View more</Link></div><div className="reviews">{homeReviews.length ? homeReviews.map((r:any)=><article className="review" key={r.id}><div className="stars">{"★".repeat(Math.max(0,Math.min(5,Number(r.rating)||0)))}</div><p>{r.comment || r.body || ""}</p></article>) : <p className="muted">No reviews yet.</p>}</div></section><section className="section"><div className="heroSide"><div><div className="eyebrow">Need help?</div><h2>Chat with A.U SHOP</h2><p className="muted">Ask about products, availability or your order.</p></div><a className="btn primary" href="https://wa.me/923160478318?text=hello%2C%20Can%20I%20get%20more%20information%20about%20this" target="_blank"><MessageCircle size={17}/> WhatsApp us</a></div></section><footer className="footer">© {new Date().getFullYear()} A.U SHOP · The Brand Shopping Store · <a href="mailto:arishusman.web@gmail.com" style={{color:'var(--text)'}}>arishusman.web@gmail.com</a></footer></main>}

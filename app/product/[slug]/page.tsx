@@ -1,78 +1,145 @@
-import {products} from '@/lib/products';
-import {notFound} from 'next/navigation';
-import {ProductActions} from '@/components/ProductActions';
-import {ReviewForm} from '@/components/ReviewForm';
+import { notFound } from 'next/navigation';
+import { ProductActions } from '@/components/ProductActions';
 import Link from 'next/link';
-import {money} from '@/lib/store';
-import type {Metadata} from 'next';
+import { money } from '@/lib/store';
 
-export async function generateStaticParams(){
-  return products.map(p=>({slug:p.slug}))
+const API =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+function slugify(value: string) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
-export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
-  const {slug}=await params;
-  const p=products.find(x=>x.slug===slug);
-  if(!p)return{};
-  return{
-    title:p.name,
-    description:`Buy ${p.name} from A.U SHOP. ${p.use}. ${p.benefit}. Available in store.`
+async function getProduct(slug: string) {
+  try {
+    const response = await fetch(
+      `${API}/api/products`,
+      { cache: 'no-store' }
+    );
+
+    if (!response.ok) return null;
+
+    const result = await response.json();
+    const dbProducts = Array.isArray(result?.data?.items)
+      ? result.data.items
+      : [];
+
+    const product = dbProducts.find((p: any) => {
+      const productSlug =
+        p.slug ||
+        p.handle ||
+        slugify(p.name);
+
+      return String(productSlug) === String(slug);
+    });
+
+    return product || null;
+  } catch (error) {
+    console.error('Product loading failed:', error);
+    return null;
   }
 }
 
-export default async function Product({params}:{params:Promise<{slug:string}>}){
-  const {slug}=await params;
-  const p=products.find(x=>x.slug===slug);
-  if(!p)return notFound();
+export default async function ProductPage({
+  params
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params;
 
-  const jsonLd={
-    '@context':'https://schema.org',
-    '@type':'Product',
-    name:p.name,
-    description:`${p.use}. ${p.benefit}.`,
-    sku:String(p.id),
-    brand:{'@type':'Brand',name:'A.U SHOP'},
-    offers:{
-      '@type':'Offer',
-      priceCurrency:'PKR',
-      price:p.price,
-      availability:p.available?'https://schema.org/InStock':'https://schema.org/OutOfStock',
-      url:`${process.env.NEXT_PUBLIC_SITE_URL||'https://example.com'}/product/${p.slug}`
-    }
-  };
+  const p = await getProduct(slug);
 
-  return <main className="container page">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(jsonLd)}}/>
+  if (!p) return notFound();
 
-    <div className="detail">
-      <div className="productArt">
-        <span>{p.name}</span>
-      </div>
+  const image =
+    p.image ||
+    p.image_url ||
+    p.imageUrl ||
+    '';
 
-      <div>
-        <div className="eyebrow">In store · Product #{p.id}</div>
-        <h1>{p.name}</h1>
-        <div className="price" style={{fontSize:28}}>{money(p.price)}</div>
-        <p className="muted">{p.use}</p>
-        <p style={{fontSize:18,lineHeight:1.7}}>{p.benefit}</p>
+  return (
+    <main className="container page">
+      <div className="detail">
 
-        <div className="notice">
-          <b>Availability:</b> {p.available?'Available in store':'Out of stock'} · {p.stock} units
+        <div className="productArt">
+          {image ? (
+            <img
+              src={image}
+              alt={p.name || 'Product'}
+              style={{
+                width: '100%',
+                height: '100%',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain',
+                display: 'block'
+              }}
+            />
+          ) : (
+            <span>{p.name}</span>
+          )}
         </div>
 
-        <ProductActions p={p}/>
+        <div>
+          <div className="eyebrow">
+            In store · Product #{p.id}
+          </div>
 
-        <div className="section">
-          <h3>Product details</h3>
-          <p className="muted">
-            Designed for {p.forWho}. Please read the packaging and consult a qualified professional for medicated or health-related products where appropriate.
-          </p>
+          <h1>{p.name}</h1>
+
+          <div
+            className="price"
+            style={{ fontSize: 28 }}
+          >
+            {money(Number(p.price) || 0)}
+          </div>
+
+          {p.use && (
+            <p className="muted">
+              {p.use}
+            </p>
+          )}
+
+          {p.benefit && (
+            <p style={{
+              fontSize: 18,
+              lineHeight: 1.7
+            }}>
+              {p.benefit}
+            </p>
+          )}
+
+          <div className="notice">
+            <b>Availability:</b>{' '}
+            {p.available
+              ? 'Available in store'
+              : 'Out of stock'}
+            {' · '}
+            {p.stock ?? 0} units
+          </div>
+
+          <ProductActions p={p} />
+
+          <div className="section">
+            <h3>Product details</h3>
+
+            <p className="muted">
+              Designed for{' '}
+              {p.forWho ||
+                p.for_who ||
+                'All customers'}.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <ReviewForm productId={p.id}/>
-
-    <Link href="/products" className="btn ghost">← Back to products</Link>
-  </main>
+      <Link href="/products" className="btn ghost">
+        ← Back to products
+      </Link>
+    </main>
+  );
 }

@@ -8,58 +8,81 @@ import { useState } from 'react';
 export function ProductCard({ p }: { p: any }) {
   const [added, setAdded] = useState(false);
 
+  const image =
+    p.image ||
+    p.image_url ||
+    p.imageUrl ||
+    '';
+
+  const productLink = `/product/${p.slug}`;
+
   return (
     <article className="product">
-      <Link href={`/product/${p.slug}`} className="productArt">
-        {p.image ? (
-          <img
-            src={p.image}
-            alt={p.name}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              display: 'block',
-            }}
-          />
-        ) : (
-          <span>{p.name}</span>
-        )}
+
+      <Link
+        href={productLink}
+        className="productCardLink"
+        aria-label={`View ${p.name}`}
+      >
+        <div className="productArt">
+          {image ? (
+            <img
+              src={image}
+              alt={p.name}
+              className="productCardImage"
+            />
+          ) : (
+            <span>{p.name}</span>
+          )}
+        </div>
+
+        <div className="productBody">
+
+          <div className="pill">
+            IN STORE
+          </div>
+
+          <div className="productName">
+            {p.name}
+          </div>
+
+          <div
+            className="muted productUse"
+            style={{ fontSize: 12 }}
+          >
+            {p.use}
+          </div>
+
+          <div className="price">
+            {money(Number(p.price))}
+          </div>
+
+        </div>
       </Link>
 
-      <div className="productBody">
-        <div className="pill">IN STORE</div>
+      <div className="cardBtns">
+
+        <button
+          className="btn primary"
+          onClick={() => {
+            addCart(p);
+            setAdded(true);
+          }}
+        >
+          <ShoppingBag size={15} />
+          {added ? 'Added' : 'Add to cart'}
+        </button>
 
         <Link
-          href={`/product/${p.slug}`}
-          className="productName"
-          style={{ color: 'var(--text)', textDecoration: 'none' }}
+          className="btn ghost"
+          href={productLink}
         >
-          {p.name}
+          View detail
+          <ArrowRight size={15} />
         </Link>
 
-        <div className="muted" style={{ fontSize: 12 }}>
-          {p.use}
-        </div>
-
-        <div className="price">{money(p.price)}</div>
-
-        <div className="cardBtns">
-          <button
-            className="btn primary"
-            onClick={() => {
-              addCart(p);
-              setAdded(true);
-            }}
-          >
-            <ShoppingBag size={15} /> {added ? 'Added' : 'Add to cart'}
-          </button>
-
-          <Link className="btn ghost" href={`/product/${p.slug}`}>
-            View <ArrowRight size={15} />
-          </Link>
-        </div>
       </div>
+
     </article>
   );
 }
