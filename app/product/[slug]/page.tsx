@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { money } from '@/lib/store';
 
 const API =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  process.env.NEXT_PUBLIC_API_URL || 'https://au-shop-latest-backend.arishusm12an.workers.dev';
 
 function slugify(value: string) {
   return String(value || '')

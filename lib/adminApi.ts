@@ -1,4 +1,4 @@
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://au-shop-latest-backend.arishusm12an.workers.dev';
 
 export async function adminLogin(username: string, password: string) {
   const res = await fetch(`${API}/api/admin/login`, {

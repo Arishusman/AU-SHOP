@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const API=process.env.NEXT_PUBLIC_API_URL||'http://localhost:3000';
+const API=process.env.NEXT_PUBLIC_API_URL||'https://au-shop-latest-backend.arishusm12an.workers.dev';
 
 export default function NewProductPage(){
   const router=useRouter();

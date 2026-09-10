@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
-const API=process.env.NEXT_PUBLIC_API_URL||'http://localhost:3000';
+const API=process.env.NEXT_PUBLIC_API_URL||'https://au-shop-latest-backend.arishusm12an.workers.dev';
 
 export default function EditProductPage(){
   const params=useParams();
