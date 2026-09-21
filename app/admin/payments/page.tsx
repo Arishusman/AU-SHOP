@@ -13,11 +13,33 @@ export default function PaymentsPage(){
 
     fetch(API+'/api/orders',{headers:{Authorization:'Bearer '+token}})
       .then(r=>r.json())
-      .then(j=>{
-        if(j.ok){
-          const data=Array.isArray(j.data)?j.data:[];
-          setRows(data.filter((r:any)=>r.transaction_id||r.payment_screenshot));
-        }
+      .then(async j=>{
+        if(!j.ok)return;
+
+        const data=Array.isArray(j.data)?j.data:[];
+        const payments=data.filter((r:any)=>r.transaction_id||r.payment_screenshot);
+
+        const secured=await Promise.all(
+          payments.map(async (r:any)=>{
+            if(!r.payment_screenshot)return r;
+
+            try{
+              const sr=await fetch(
+                API+'/api/payment-screenshot?url='+encodeURIComponent(r.payment_screenshot),
+                {headers:{Authorization:'Bearer '+token}}
+              );
+              const sj=await sr.json();
+
+              return sj.ok
+                ? {...r,payment_screenshot_secure:sj.data.url}
+                : {...r,payment_screenshot_secure:null};
+            }catch{
+              return {...r,payment_screenshot_secure:null};
+            }
+          })
+        );
+
+        setRows(secured);
       })
       .catch(()=>{})
       .finally(()=>setLoading(false));
@@ -50,11 +72,11 @@ export default function PaymentsPage(){
             <div style={{marginTop:8}}><b>Address:</b> {r.address||'—'}</div>
           </div>
 
-          {r.payment_screenshot&&<div style={{marginTop:18}}>
+          {r.payment_screenshot&&r.payment_screenshot_secure&&<div style={{marginTop:18}}>
             <div style={{fontWeight:700,marginBottom:8}}>Payment Screenshot</div>
-            <a href={r.payment_screenshot} target="_blank" rel="noreferrer">
+            <a href={r.payment_screenshot_secure} target="_blank" rel="noreferrer">
               <img
-                src={r.payment_screenshot}
+                src={r.payment_screenshot_secure}
                 alt="Payment screenshot"
                 style={{width:'100%',maxWidth:520,maxHeight:520,objectFit:'contain',borderRadius:12,border:'1px solid #ddd'}}
               />

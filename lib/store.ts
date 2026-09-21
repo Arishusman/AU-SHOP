@@ -8,5 +8,5 @@ export const updateQty=(id:number,qty:number)=>setCart(getCart().map(x=>x.id===i
 export const cartCount=()=>getCart().reduce((a,b)=>a+b.qty,0);
 export const money=(n:number)=>`Rs ${n.toLocaleString('en-PK')}`;
 export const slugify=(s:string)=>s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-export const themeInit=()=>{const t=localStorage.getItem(THEME)||'dark';document.documentElement.dataset.theme=t;};
+export const themeInit=()=>{const t=localStorage.getItem(THEME)||'light';document.documentElement.dataset.theme=t;};
 export const toggleTheme=()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem(THEME,next)};

@@ -1,6 +1,6 @@
 'use client';
 
-import {useMemo,useState} from 'react';
+import {useEffect,useMemo,useState} from 'react';
 import {useSearchParams,useRouter} from 'next/navigation';
 import {products} from '@/lib/products';
 import {getCart,money} from '@/lib/store';
@@ -15,6 +15,45 @@ export default function CheckoutClient(){
 
   const[sub,setSub]=useState({name:'',phone:'',address:'',quantity:1});
   const[method,setMethod]=useState<'COD'|'PAID'>('COD');
+
+  useEffect(()=>{
+    const raw=localStorage.getItem('au-user')||'';
+    if(!raw)return;
+
+    let user:any=null;
+
+    try{
+      user=JSON.parse(raw);
+    }catch{
+      return;
+    }
+
+    const profileId=String(user?.profile_id||'').trim();
+    const token=String(user?.token||'').trim();
+    if(!profileId||!token)return;
+
+    const API=process.env.NEXT_PUBLIC_API_URL||'';
+
+    fetch(API+'/api/profile/'+profileId,{
+      headers:{
+        Authorization:'Bearer '+token
+      }
+    })
+      .then(r=>r.json())
+      .then(j=>{
+        const p=j?.data?.profile;
+
+        if(p){
+          setSub(v=>({
+            ...v,
+            name:p.name||v.name,
+            phone:p.phone||v.phone,
+            address:p.address||v.address
+          }));
+        }
+      })
+      .catch(()=>{});
+  },[]);
   const[transactionId,setTransactionId]=useState('');
   const[paymentFile,setPaymentFile]=useState<File|null>(null);
   const[saving,setSaving]=useState(false);
@@ -54,11 +93,18 @@ export default function CheckoutClient(){
       const id='AU-'+Date.now().toString(36).toUpperCase();
       const payment=method==='COD'?'COD':'in review';
 
+      let profileId:string|null=null;
+      try{
+        const saved=JSON.parse(localStorage.getItem('au-user')||'{}');
+        profileId=saved.profile_id||null;
+      }catch{}
+
       const r=await fetch(API+'/api/orders',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
           order_id:id,
+          profile_id:profileId,
           name:sub.name,
           phone:sub.phone,
           address:sub.address,

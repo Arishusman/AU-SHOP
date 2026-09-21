@@ -22,16 +22,28 @@ export function ReviewForm({productId}:{productId:number}){
     setMessage('');
 
     try{
+      let profileId:string|null=null;
+      let customerToken='';
+
+      try{
+        const saved=JSON.parse(localStorage.getItem('au-user')||'{}');
+        profileId=saved.profile_id||null;
+        customerToken=String(saved.token||'');
+      }catch{}
+
       const r=await fetch(API+'/api/reviews',{
         method:'POST',
-        headers:{'Content-Type':'application/json'},
+        headers:{
+          'Content-Type':'application/json',
+          Authorization:'Bearer '+customerToken
+        },
         body:JSON.stringify({
           product_id:productId,
+          profile_id:profileId,
           name:name.trim(),
           email:email.trim(),
           rating,
-          comment:comment.trim(),
-          approved:true
+          comment:comment.trim()
         })
       });
 

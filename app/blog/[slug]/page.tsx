@@ -43,6 +43,25 @@ export default async function BlogArticle({params}:{params:Promise<{slug:string}
         <div style={{whiteSpace:'pre-wrap',lineHeight:1.8,fontSize:17}}>
           {blog.content}
         </div>
+
+        <div
+          style={{
+            marginTop: 40,
+            padding: 28,
+            borderRadius: 16,
+            textAlign: 'center',
+            background: '#f8f8f8',
+          }}
+        >
+          <h3 style={{marginBottom: 8}}>Ready to shop?</h3>
+          <p className="muted" style={{marginBottom: 18}}>
+            Explore our products and find the right care for you.
+          </p>
+
+          <Link href="/products" className="btn primary">
+            Shop Now →
+          </Link>
+        </div>
       </div>
     </article>
   </main>;

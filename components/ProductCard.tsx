@@ -14,7 +14,16 @@ export function ProductCard({ p }: { p: any }) {
     p.imageUrl ||
     '';
 
-  const productLink = `/product/${p.slug}`;
+  const productSlug =
+    p.slug ||
+    p.handle ||
+    String(p.name || '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+  const productLink = `/product/${productSlug}`;
 
   return (
     <article className="product">
