@@ -34,6 +34,7 @@ export default function LiveHome(){
   const [site,setSite]=useState<any>(fallback);
   const [categories,setCategories]=useState<any[]>([]);
   const [products,setProducts]=useState<any[]>([]);
+  const [homeConfig,setHomeConfig]=useState<any>({categories:[],products:[]});
   const [active,setActive]=useState(0);
   const [loading,setLoading]=useState(true);
 
@@ -41,9 +42,10 @@ export default function LiveHome(){
     Promise.all([
       fetch(API+'/api/site-content',{cache:'no-store'}).then(r=>r.json()),
       fetch(API+'/api/categories',{cache:'no-store'}).then(r=>r.json()),
-      fetch(API+'/api/products',{cache:'no-store'}).then(r=>r.json())
+      fetch(API+'/api/products',{cache:'no-store'}).then(r=>r.json()),
+      fetch(API+'/api/home-config',{cache:'no-store'}).then(r=>r.json())
     ])
-    .then(([siteRes,catRes,prodRes])=>{
+    .then(([siteRes,catRes,prodRes,homeRes])=>{
       if(siteRes?.ok){
         setSite({
           ...fallback,
@@ -70,6 +72,17 @@ export default function LiveHome(){
 
       setCategories(cats);
       setProducts(prods);
+
+      if(homeRes?.ok){
+        setHomeConfig({
+          categories:Array.isArray(homeRes.data?.categories)
+            ?homeRes.data.categories
+            :[],
+          products:Array.isArray(homeRes.data?.products)
+            ?homeRes.data.products
+            :[]
+        });
+      }
     })
     .catch(console.error)
     .finally(()=>setLoading(false));
@@ -243,9 +256,24 @@ export default function LiveHome(){
 
       {/* LIVE CATEGORIES */}
 
-      {!loading&&categories.map((cat:any,index:number)=>{
+      {!loading&&categories
+        .filter((cat:any)=>(
+          homeConfig.categories.length===0 ||
+          homeConfig.categories.some((x:any)=>String(x.category_id)===String(cat.id))
+        ))
+        .sort((a:any,b:any)=>{
+          const ao=homeConfig.categories.find((x:any)=>String(x.category_id)===String(a.id))?.sort_order ?? a.sort_order ?? 0;
+          const bo=homeConfig.categories.find((x:any)=>String(x.category_id)===String(b.id))?.sort_order ?? b.sort_order ?? 0;
+          return Number(ao)-Number(bo);
+        })
+        .map((cat:any,index:number)=>{
 
-        const ids=(cat.category_products||[])
+        const ids=homeConfig.products
+          .filter((x:any)=>(
+            String(x.category_id)===String(cat.id) &&
+            x.enabled!==false
+          ))
+          .sort((a:any,b:any)=>Number(a.sort_order||0)-Number(b.sort_order||0))
           .map((x:any)=>String(x.product_id));
 
         const list=products
