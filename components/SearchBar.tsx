@@ -3,6 +3,7 @@
 import {Search, X} from 'lucide-react';
 import {useEffect, useState} from 'react';
 import Link from 'next/link';
+import {getCached, setCached} from '@/lib/liveCache';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
@@ -17,11 +18,19 @@ type Product = {
 
 export function SearchBar() {
   const [q, setQ] = useState('');
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(() => {
+    return getCached<Product[]>('products') || [];
+  });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+
+    const cached = getCached<Product[]>('products');
+
+    if (cached?.length && !cancelled) {
+      setProducts(cached);
+    }
 
     const loadProducts = async () => {
       setLoading(true);
@@ -45,11 +54,10 @@ export function SearchBar() {
 
         if (!cancelled) {
           setProducts(list);
+          setCached('products', list);
         }
       } catch {
-        if (!cancelled) {
-          setProducts([]);
-        }
+        // Keep cached products if API fails.
       } finally {
         if (!cancelled) {
           setLoading(false);
@@ -101,7 +109,7 @@ export function SearchBar() {
 
       {q && (
         <div className="suggestions">
-          {loading ? (
+          {loading && !products.length ? (
             <div style={{padding: 18}} className="muted">
               Searching products...
             </div>
