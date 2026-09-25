@@ -84,34 +84,97 @@ export default function LiveHome() {
   useEffect(() => {
     const load = async () => {
       try {
-        const [siteRes, catRes, productRes, configRes] = await Promise.all([
+        const results = await Promise.allSettled([
           fetch(`${API}/api/site-content`, { cache: "no-store" }),
           fetch(`${API}/api/categories`, { cache: "no-store" }),
           fetch(`${API}/api/products`, { cache: "no-store" }),
           fetch(`${API}/api/home-config`, { cache: "no-store" }),
         ]);
 
-        if (siteRes.ok) {
-          const data = await siteRes.json();
-          setSite({ ...defaultSite, ...data });
-        }
+        const siteRes =
+          results[0].status === "fulfilled" ? results[0].value : null;
 
-        if (catRes.ok) {
-          const data = await catRes.json();
-          setCategories(Array.isArray(data) ? data : data?.items || []);
-        }
+        const catRes =
+          results[1].status === "fulfilled" ? results[1].value : null;
 
-        if (productRes.ok) {
-          const data = await productRes.json();
-          setProducts(Array.isArray(data) ? data : data?.items || []);
-        }
+        const productRes =
+          results[2].status === "fulfilled" ? results[2].value : null;
 
-        if (configRes.ok) {
-          const data = await configRes.json();
-          setHomeConfig({
-            categories: Array.isArray(data?.categories) ? data.categories : [],
-            products: Array.isArray(data?.products) ? data.products : [],
+        const configRes =
+          results[3].status === "fulfilled" ? results[3].value : null;
+
+        if (siteRes?.ok) {
+          const response = await siteRes.json();
+          const data = response?.data ?? response;
+
+          setSite({
+            ...defaultSite,
+            ...data,
+            hero: {
+              ...defaultSite.hero,
+              ...(data?.hero || {}),
+            },
+            showcase: Array.isArray(data?.showcase)
+              ? data.showcase.map((item: any) => ({
+                  image: item.image || "",
+                  title: item.title || "",
+                  text: item.text || "",
+                  buttonText:
+                    item.buttonText ||
+                    item.button_text ||
+                    "Shop now",
+                  buttonLink:
+                    item.buttonLink ||
+                    item.button_link ||
+                    item.href ||
+                    "/products",
+                }))
+              : [],
           });
+        }
+
+        if (catRes?.ok) {
+          const response = await catRes.json();
+          const data = response?.data ?? response;
+
+          setCategories(
+            Array.isArray(data)
+              ? data
+              : Array.isArray(data?.items)
+                ? data.items
+                : []
+          );
+        }
+
+        if (productRes?.ok) {
+          const response = await productRes.json();
+          const data = response?.data ?? response;
+
+          setProducts(
+            Array.isArray(data)
+              ? data
+              : Array.isArray(data?.items)
+                ? data.items
+                : []
+          );
+        }
+
+        if (configRes?.ok) {
+          const response = await configRes.json();
+          const data = response?.data ?? response;
+
+          setHomeConfig({
+            categories: Array.isArray(data?.categories)
+              ? data.categories
+              : [],
+            products: Array.isArray(data?.products)
+              ? data.products
+              : [],
+          });
+        } else {
+          console.warn(
+            "Home config unavailable; using normal categories/products."
+          );
         }
       } catch (error) {
         console.error("Unable to load homepage:", error);
@@ -128,7 +191,13 @@ export default function LiveHome() {
   }, []);
 
   const visibleCategories = useMemo(() => {
-    if (!homeConfig.categories.length) return [];
+    if (!homeConfig.categories.length) {
+      return [...categories].sort(
+        (a, b) =>
+          Number(a.sort_order ?? 0) - Number(b.sort_order ?? 0) ||
+          String(a.name).localeCompare(String(b.name))
+      );
+    }
 
     const order = new Map(
       homeConfig.categories.map((item) => [
@@ -147,18 +216,28 @@ export default function LiveHome() {
   }, [categories, homeConfig.categories]);
 
   const getCategoryProducts = (categoryId: number | string) => {
-    const configured = homeConfig.products
-      .filter(
-        (item) =>
-          String(item.category_id) === String(categoryId) && item.enabled
-      )
-      .sort((a, b) => a.sort_order - b.sort_order);
+    const byId = new Map(
+      products.map((product) => [String(product.id), product])
+    );
 
-    const byId = new Map(products.map((product) => [String(product.id), product]));
+    if (homeConfig.products.length) {
+      const configured = homeConfig.products
+        .filter(
+          (item) =>
+            String(item.category_id) === String(categoryId) && item.enabled
+        )
+        .sort((a, b) => a.sort_order - b.sort_order);
 
-    return configured
-      .map((item) => byId.get(String(item.product_id)))
-      .filter(Boolean) as Product[];
+      return configured
+        .map((item) => byId.get(String(item.product_id)))
+        .filter(Boolean) as Product[];
+    }
+
+    return products.filter(
+      (product) =>
+        String(product.category_id) === String(categoryId) ||
+        String(product.category?.id) === String(categoryId)
+    );
   };
 
   const scrollTop = () => {
