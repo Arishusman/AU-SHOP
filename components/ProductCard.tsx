@@ -51,15 +51,12 @@ export function ProductCard({ p }: { p: any }) {
             IN STORE
           </div>
 
-          <div className="productName">
+          <div className="productName productCardName">
             {p.name}
           </div>
 
-          <div
-            className="muted productUse"
-            style={{ fontSize: 12 }}
-          >
-            {p.use}
+          <div className="productCardDescription">
+            {p.description || p.use || ''}
           </div>
 
           <div className="price">

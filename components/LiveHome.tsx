@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import {useEffect,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {MessageCircle,ShieldCheck,Truck,Star} from 'lucide-react';
 import {SearchBar} from '@/components/SearchBar';
 import {ProductCard} from '@/components/ProductCard';
@@ -36,6 +36,31 @@ export default function LiveHome(){
   const [products,setProducts]=useState<any[]>([]);
   const [homeConfig,setHomeConfig]=useState<any>({categories:[],products:[]});
   const [active,setActive]=useState(0);
+  const touchStartX=useRef<number|null>(null);
+  const touchEndX=useRef<number|null>(null);
+
+  const handleTouchStart=(e:React.TouchEvent)=>{
+    touchStartX.current=e.changedTouches[0].clientX;
+  };
+
+  const handleTouchEnd=(e:React.TouchEvent)=>{
+    if(touchStartX.current===null)return;
+
+    touchEndX.current=e.changedTouches[0].clientX;
+
+    const diff=touchStartX.current-touchEndX.current;
+
+    if(Math.abs(diff)<45)return;
+
+    if(diff>0){
+      setActive(x=>(x+1)%site.showcase.length);
+    }else{
+      setActive(x=>x===0?site.showcase.length-1:x-1);
+    }
+
+    touchStartX.current=null;
+    touchEndX.current=null;
+  };
   const [loading,setLoading]=useState(true);
 
   const whatsappNumber='923160478318';
@@ -112,31 +137,17 @@ export default function LiveHome(){
   },[site.showcase]);
 
   return (
+    <a
+      href={`https://wa.me/923160478318?text=${encodeURIComponent("Assalam o Alaikum! 👋\n\nMain A.U SHOP se products ke bare mein maloomat lena chahta hoon.")}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="floatingWhatsapp"
+      aria-label="Chat with A.U SHOP on WhatsApp"
+    >
+      <MessageCircle size={25} fill="currentColor" />
+    </a>
+
     <main className="container">
-
-      {/* FLOATING ACTIONS */}
-      <div className="floatingActions">
-
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="floatingWhatsapp"
-          aria-label="Chat with A.U SHOP on WhatsApp"
-        >
-          <MessageCircle size={25} fill="currentColor" />
-        </a>
-
-        <button
-          type="button"
-          className="floatingTop"
-          onClick={goTop}
-          aria-label="Back to top"
-        >
-          ↑
-        </button>
-
-      </div>
 
       {/* HERO */}
 
@@ -184,7 +195,11 @@ export default function LiveHome(){
       {site.showcase.length>0&&(
         <section className="beautyShowcase">
 
-          <div className="beautyShowcaseFrame">
+          <div
+            className="beautyShowcaseFrame"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
 
             <div
               className="beautyShowcaseTrack"
