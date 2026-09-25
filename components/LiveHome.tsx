@@ -38,6 +38,19 @@ export default function LiveHome(){
   const [active,setActive]=useState(0);
   const [loading,setLoading]=useState(true);
 
+  const whatsappNumber='923160478318';
+  const whatsappMessage=encodeURIComponent(
+    'Assalam o Alaikum! 👋\n\nMain A.U SHOP se products ke bare mein maloomat lena chahta hoon.'
+  );
+  const whatsappUrl=`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
+  const goTop=()=>{
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    });
+  };
+
   useEffect(()=>{
     Promise.all([
       fetch(API+'/api/site-content',{cache:'no-store'}).then(r=>r.json()),
@@ -100,6 +113,30 @@ export default function LiveHome(){
 
   return (
     <main className="container">
+
+      {/* FLOATING ACTIONS */}
+      <div className="floatingActions">
+
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="floatingWhatsapp"
+          aria-label="Chat with A.U SHOP on WhatsApp"
+        >
+          <MessageCircle size={25} fill="currentColor" />
+        </a>
+
+        <button
+          type="button"
+          className="floatingTop"
+          onClick={goTop}
+          aria-label="Back to top"
+        >
+          ↑
+        </button>
+
+      </div>
 
       {/* HERO */}
 
@@ -225,7 +262,25 @@ export default function LiveHome(){
 
           <div className="beautyDots">
 
-            {site.showcase.map((_:any,index:number)=>(
+            <button
+                type="button"
+                className="showcaseArrow showcaseArrowLeft"
+                onClick={()=>setActive(x=>x===0?site.showcase.length-1:x-1)}
+                aria-label="Previous showcase"
+              >
+                ‹
+              </button>
+
+              <button
+                type="button"
+                className="showcaseArrow showcaseArrowRight"
+                onClick={()=>setActive(x=>(x+1)%site.showcase.length)}
+                aria-label="Next showcase"
+              >
+                ›
+              </button>
+
+              {site.showcase.map((_:any,index:number)=>(
               <button
                 key={index}
                 className={active===index?'active':''}

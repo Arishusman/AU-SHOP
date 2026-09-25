@@ -1622,3 +1622,287 @@ html[data-theme="dark"] .notice {
     min-width:105px;
   }
 }
+
+/* Product card text limit */
+.productCardName{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  line-clamp:3;
+  overflow:hidden;
+}
+
+.productCardDescription{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  line-clamp:3;
+  overflow:hidden;
+}
+
+/* Showcase slider arrows */
+.beautyShowcaseViewport{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  border-radius:24px;
+}
+
+.beautyShowcaseTrack{
+  display:flex;
+  width:100%;
+  transition:transform .45s ease;
+}
+
+.beautySlideLink{
+  display:block;
+  flex:0 0 100%;
+  width:100%;
+  color:inherit;
+  text-decoration:none;
+}
+
+.showcaseArrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:5;
+  width:44px;
+  height:44px;
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:50%;
+  background:rgba(255,255,255,.85);
+  color:#2C2A29;
+  font-size:32px;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 8px 25px rgba(0,0,0,.12);
+}
+
+.showcaseArrowLeft{left:18px}
+.showcaseArrowRight{right:18px}
+
+.showcaseDots{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  z-index:6;
+  display:flex;
+  gap:7px;
+}
+
+.showcaseDots button{
+  width:8px;
+  height:8px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.55);
+  cursor:pointer;
+}
+
+.showcaseDots button.active{
+  width:22px;
+  border-radius:10px;
+  background:#fff;
+}
+
+/* WhatsApp + Back to top */
+.floatingActions{
+  position:fixed;
+  left:18px;
+  right:18px;
+  bottom:22px;
+  z-index:9999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  pointer-events:none;
+}
+
+.floatingWhatsapp,
+.floatingTop{
+  pointer-events:auto;
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  border:1px solid var(--line);
+  box-shadow:0 10px 30px rgba(0,0,0,.16);
+  cursor:pointer;
+}
+
+.floatingWhatsapp{
+  background:#25D366;
+  color:#fff;
+  font-size:26px;
+}
+
+.floatingTop{
+  background:#fff;
+  color:var(--text);
+  font-size:22px;
+}
+
+.floatingWhatsapp:hover,
+.floatingTop:hover,
+.showcaseArrow:hover{
+  transform:translateY(-3px);
+}
+
+@media(max-width:520px){
+  .showcaseArrow{
+    width:36px;
+    height:36px;
+    font-size:27px;
+  }
+
+  .showcaseArrowLeft{left:10px}
+  .showcaseArrowRight{right:10px}
+
+  .floatingActions{
+    left:12px;
+    right:12px;
+    bottom:15px;
+  }
+
+  .floatingWhatsapp,
+  .floatingTop{
+    width:48px;
+    height:48px;
+  }
+}
+
+/* Showcase left/right controls */
+.beautyShowcaseFrame{
+  position:relative;
+  overflow:hidden;
+}
+
+.showcaseArrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:20;
+  width:44px;
+  height:44px;
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:50%;
+  background:rgba(255,255,255,.88);
+  color:#2C2A29;
+  font-size:32px;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 8px 25px rgba(0,0,0,.15);
+}
+
+.showcaseArrow:hover{
+  transform:translateY(-50%) scale(1.06);
+}
+
+.showcaseArrowLeft{
+  left:16px;
+}
+
+.showcaseArrowRight{
+  right:16px;
+}
+
+/* Floating WhatsApp + Back To Top */
+.floatingActions{
+  position:fixed;
+  left:18px;
+  right:18px;
+  bottom:22px;
+  z-index:9999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  pointer-events:none;
+}
+
+.floatingWhatsapp,
+.floatingTop{
+  pointer-events:auto;
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  border:1px solid var(--line);
+  box-shadow:0 10px 30px rgba(0,0,0,.16);
+  cursor:pointer;
+}
+
+.floatingWhatsapp{
+  background:#25D366;
+  color:#fff;
+}
+
+.floatingTop{
+  background:#fff;
+  color:var(--text);
+  font-size:22px;
+}
+
+.floatingWhatsapp:hover,
+.floatingTop:hover{
+  transform:translateY(-3px);
+}
+
+@media(max-width:520px){
+  .showcaseArrow{
+    width:36px;
+    height:36px;
+    font-size:27px;
+  }
+
+  .showcaseArrowLeft{
+    left:9px;
+  }
+
+  .showcaseArrowRight{
+    right:9px;
+  }
+
+  .floatingActions{
+    left:12px;
+    right:12px;
+    bottom:15px;
+  }
+
+  .floatingWhatsapp,
+  .floatingTop{
+    width:48px;
+    height:48px;
+  }
+}
+
+/* Product card: maximum 3 lines */
+.productCardName{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  line-clamp:3;
+  overflow:hidden;
+}
+
+.productCardDescription{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  line-clamp:3;
+  overflow:hidden;
+}
