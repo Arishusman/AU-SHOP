@@ -1,486 +1,286 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import {useEffect,useRef,useState} from 'react';
-import {MessageCircle,ShieldCheck,Truck,Star} from 'lucide-react';
-import {SearchBar} from '@/components/SearchBar';
-import {ProductCard} from '@/components/ProductCard';
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { MessageCircle, ArrowUp } from "lucide-react";
+import { ProductCard } from "./ProductCard";
 
-const API=process.env.NEXT_PUBLIC_API_URL||'http://localhost:4000';
+const API = process.env.NEXT_PUBLIC_API_URL || "";
 
-const fallback:any={
-  brand_name:'A.U SHOP',
-  announcement:'✦ Reveal Your Natural Glow • Discover Beauty Essentials • Premium Makeup & Skincare • New Arrivals • Your Beauty, Your Way ✦',
-  hero:{
-    eyebrow:'A.U SHOP · THE BRAND SHOPPING STORE',
-    title:'Beauty, care & everyday essentials — elevated.',
-    text:'Shop a curated collection of skincare, beauty, hair care, feminine care and personal essentials with a premium, simple shopping experience.',
-    primary_text:'Shop all products',
-    primary_href:'/products',
-    secondary_text:'Explore categories',
-    secondary_href:'/categories'
-  },
-  showcase:[],
-  why:{
-    eyebrow:'Why A.U SHOP',
-    title:'Quality products. Clear pricing. Easy tracking.',
-    text:'A modern beauty storefront designed for simple discovery, easy checkout and clear order tracking.',
-    points:['Curated beauty catalog','Delivery tracking','Customer reviews']
-  }
+type SiteContent = {
+  hero: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    buttonText: string;
+    buttonLink: string;
+  };
+  showcase: Array<{
+    image: string;
+    title: string;
+    text: string;
+    buttonText: string;
+    buttonLink: string;
+  }>;
 };
 
-export default function LiveHome(){
+type Category = {
+  id: number | string;
+  name: string;
+  image?: string;
+  sort_order?: number;
+};
 
-  const [site,setSite]=useState<any>(fallback);
-  const [categories,setCategories]=useState<any[]>([]);
-  const [products,setProducts]=useState<any[]>([]);
-  const [homeConfig,setHomeConfig]=useState<any>({categories:[],products:[]});
-  const [active,setActive]=useState(0);
-  const touchStartX=useRef<number|null>(null);
-  const touchEndX=useRef<number|null>(null);
-
-  const handleTouchStart=(e:React.TouchEvent)=>{
-    touchStartX.current=e.changedTouches[0].clientX;
+type Product = {
+  id: number | string;
+  name: string;
+  slug?: string;
+  price: number;
+  sale_price?: number | null;
+  image?: string;
+  images?: string[];
+  category_id?: number | string;
+  category?: {
+    id?: number | string;
+    name?: string;
   };
+};
 
-  const handleTouchEnd=(e:React.TouchEvent)=>{
-    if(touchStartX.current===null)return;
+type HomeConfig = {
+  categories: Array<{
+    category_id: number | string;
+    enabled: boolean;
+    sort_order: number;
+  }>;
+  products: Array<{
+    category_id: number | string;
+    product_id: number | string;
+    enabled: boolean;
+    sort_order: number;
+  }>;
+};
 
-    touchEndX.current=e.changedTouches[0].clientX;
+const defaultSite: SiteContent = {
+  hero: {
+    eyebrow: "A.U SHOP",
+    title: "Discover Your Everyday Favorites",
+    text: "Shop quality products with a simple and premium shopping experience.",
+    buttonText: "Shop Now",
+    buttonLink: "/",
+  },
+  showcase: [],
+};
 
-    const diff=touchStartX.current-touchEndX.current;
+export default function LiveHome() {
+  const [site, setSite] = useState<SiteContent>(defaultSite);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [homeConfig, setHomeConfig] = useState<HomeConfig>({
+    categories: [],
+    products: [],
+  });
+  const [showTop, setShowTop] = useState(false);
 
-    if(Math.abs(diff)<45)return;
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [siteRes, catRes, productRes, configRes] = await Promise.all([
+          fetch(`${API}/api/site-content`, { cache: "no-store" }),
+          fetch(`${API}/api/categories`, { cache: "no-store" }),
+          fetch(`${API}/api/products`, { cache: "no-store" }),
+          fetch(`${API}/api/home-config`, { cache: "no-store" }),
+        ]);
 
-    if(diff>0){
-      setActive(x=>(x+1)%site.showcase.length);
-    }else{
-      setActive(x=>x===0?site.showcase.length-1:x-1);
-    }
+        if (siteRes.ok) {
+          const data = await siteRes.json();
+          setSite({ ...defaultSite, ...data });
+        }
 
-    touchStartX.current=null;
-    touchEndX.current=null;
-  };
-  const [loading,setLoading]=useState(true);
+        if (catRes.ok) {
+          const data = await catRes.json();
+          setCategories(Array.isArray(data) ? data : data?.items || []);
+        }
 
-  const whatsappNumber='923160478318';
-  const whatsappMessage=encodeURIComponent(
-    'Assalam o Alaikum! 👋\n\nMain A.U SHOP se products ke bare mein maloomat lena chahta hoon.'
-  );
-  const whatsappUrl=`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+        if (productRes.ok) {
+          const data = await productRes.json();
+          setProducts(Array.isArray(data) ? data : data?.items || []);
+        }
 
-  const goTop=()=>{
-    window.scrollTo({
-      top:0,
-      behavior:'smooth'
-    });
-  };
-
-  useEffect(()=>{
-    Promise.all([
-      fetch(API+'/api/site-content',{cache:'no-store'}).then(r=>r.json()),
-      fetch(API+'/api/categories',{cache:'no-store'}).then(r=>r.json()),
-      fetch(API+'/api/products',{cache:'no-store'}).then(r=>r.json()),
-      fetch(API+'/api/home-config',{cache:'no-store'}).then(r=>r.json())
-    ])
-    .then(([siteRes,catRes,prodRes,homeRes])=>{
-      if(siteRes?.ok){
-        setSite({
-          ...fallback,
-          ...siteRes.data,
-          hero:{...fallback.hero,...(siteRes.data?.hero||{})},
-          why:{...fallback.why,...(siteRes.data?.why||{})},
-          showcase:Array.isArray(siteRes.data?.showcase)
-            ?siteRes.data.showcase
-            :[]
-        });
+        if (configRes.ok) {
+          const data = await configRes.json();
+          setHomeConfig({
+            categories: Array.isArray(data?.categories) ? data.categories : [],
+            products: Array.isArray(data?.products) ? data.products : [],
+          });
+        }
+      } catch (error) {
+        console.error("Unable to load homepage:", error);
       }
+    };
 
-      const cats=Array.isArray(catRes?.data)
-        ?catRes.data
-        :Array.isArray(catRes?.data?.items)
-        ?catRes.data.items
-        :[];
+    load();
+  }, []);
 
-      const prods=Array.isArray(prodRes?.data)
-        ?prodRes.data
-        :Array.isArray(prodRes?.data?.items)
-        ?prodRes.data.items
-        :[];
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 500);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-      setCategories(cats);
-      setProducts(prods);
+  const visibleCategories = useMemo(() => {
+    if (!homeConfig.categories.length) return [];
 
-      if(homeRes?.ok){
-        setHomeConfig({
-          categories:Array.isArray(homeRes.data?.categories)
-            ?homeRes.data.categories
-            :[],
-          products:Array.isArray(homeRes.data?.products)
-            ?homeRes.data.products
-            :[]
-        });
-      }
-    })
-    .catch(console.error)
-    .finally(()=>setLoading(false));
-  },[]);
+    const order = new Map(
+      homeConfig.categories.map((item) => [
+        String(item.category_id),
+        item.sort_order,
+      ])
+    );
 
-  useEffect(()=>{
-    if(!site.showcase?.length)return;
+    return categories
+      .filter((cat) => order.has(String(cat.id)))
+      .sort(
+        (a, b) =>
+          Number(order.get(String(a.id)) ?? 0) -
+          Number(order.get(String(b.id)) ?? 0)
+      );
+  }, [categories, homeConfig.categories]);
 
-    const timer=setInterval(()=>{
-      setActive(x=>(x+1)%site.showcase.length);
-    },4500);
+  const getCategoryProducts = (categoryId: number | string) => {
+    const configured = homeConfig.products
+      .filter(
+        (item) =>
+          String(item.category_id) === String(categoryId) && item.enabled
+      )
+      .sort((a, b) => a.sort_order - b.sort_order);
 
-    return()=>clearInterval(timer);
-  },[site.showcase]);
+    const byId = new Map(products.map((product) => [String(product.id), product]));
+
+    return configured
+      .map((item) => byId.get(String(item.product_id)))
+      .filter(Boolean) as Product[];
+  };
+
+  const scrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <a
-      href={`https://wa.me/923160478318?text=${encodeURIComponent("Assalam o Alaikum! 👋\n\nMain A.U SHOP se products ke bare mein maloomat lena chahta hoon.")}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="floatingWhatsapp"
-      aria-label="Chat with A.U SHOP on WhatsApp"
-    >
-      <MessageCircle size={25} fill="currentColor" />
-    </a>
+    <>
+      <a
+        href={`https://wa.me/923160478318?text=${encodeURIComponent(
+          "Assalam o Alaikum! 👋\n\nMain A.U SHOP se products ke bare mein maloomat lena chahta hoon."
+        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="floatingWhatsapp"
+        aria-label="Chat with A.U SHOP on WhatsApp"
+      >
+        <MessageCircle size={25} fill="currentColor" />
+      </a>
 
-    <main className="container">
+      <main className="container">
+        <section className="hero">
+          <div className="heroCard">
+            <div className="eyebrow">{site.hero.eyebrow}</div>
 
-      {/* HERO */}
+            <h1>{site.hero.title}</h1>
 
-      <section className="hero">
-
-        <div className="heroCard">
-
-          <div className="eyebrow">
-            {site.hero.eyebrow}
-          </div>
-
-          <h1>
-            {site.hero.title}
-          </h1>
-
-          <p>
-            {site.hero.text}
-          </p>
-
-          <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-
-            <Link
-              href={site.hero.primary_href}
-              className="btn primary"
-            >
-              {site.hero.primary_text}
-            </Link>
-
-            <Link
-              href={site.hero.secondary_href}
-              className="btn ghost"
-            >
-              {site.hero.secondary_text}
-            </Link>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* BEAUTY SHOWCASE */}
-
-      {site.showcase.length>0&&(
-        <section className="beautyShowcase">
-
-          <div
-            className="beautyShowcaseFrame"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
+            <p>{site.hero.text}</p>
 
             <div
-              className="beautyShowcaseTrack"
               style={{
-                transform:`translateX(-${active*100}%)`
+                display: "flex",
+                gap: 10,
+                flexWrap: "wrap",
               }}
             >
-
-              {site.showcase.map((slide:any,index:number)=>{
-
-                const href=String(slide.href||'').trim();
-                const title=slide.title||'A.U SHOP beauty collection';
-                const text=slide.text||'';
-                const buttonText=slide.button_text||'Shop now';
-
-                const content=(
-                  <div
-                    className="beautySlide"
-                    key={index}
-                  >
-
-                    <img
-                      src={slide.image}
-                      alt={title}
-                      loading={index===0?'eager':'lazy'}
-                    />
-
-                    <div className="beautySlideOverlay">
-
-                      <div className="eyebrow">
-                        A.U SHOP BEAUTY
-                      </div>
-
-                      {slide.title&&(
-                        <h2>
-                          {slide.title}
-                        </h2>
-                      )}
-
-                      {text&&(
-                        <p>
-                          {text}
-                        </p>
-                      )}
-
-                      {href&&buttonText&&(
-                        <span className="btn primary beautySlideButton">
-                          {buttonText}
-                        </span>
-                      )}
-
-                    </div>
-
-                  </div>
-                );
-
-                if(!href)return content;
-
-                return (
-                  <a
-                    key={index}
-                    href={href}
-                    className="beautySlideLink"
-                    target={href.startsWith('http')?'_blank':undefined}
-                    rel={href.startsWith('http')?'noopener noreferrer':undefined}
-                  >
-                    {content}
-                  </a>
-                );
-              })}
-
-            </div>
-
-          </div>
-
-          <div className="beautyDots">
-
-            <button
-                type="button"
-                className="showcaseArrow showcaseArrowLeft"
-                onClick={()=>setActive(x=>x===0?site.showcase.length-1:x-1)}
-                aria-label="Previous showcase"
-              >
-                ‹
-              </button>
-
-              <button
-                type="button"
-                className="showcaseArrow showcaseArrowRight"
-                onClick={()=>setActive(x=>(x+1)%site.showcase.length)}
-                aria-label="Next showcase"
-              >
-                ›
-              </button>
-
-              {site.showcase.map((_:any,index:number)=>(
-              <button
-                key={index}
-                className={active===index?'active':''}
-                onClick={()=>setActive(index)}
-                aria-label={`Show image ${index+1}`}
-              />
-            ))}
-
-          </div>
-
-        </section>
-      )}
-
-      {/* WHY A.U SHOP */}
-
-      <section className="section whyAuShop">
-
-        <div className="heroSide">
-
-          <div>
-
-            <div className="eyebrow">
-              {site.why.eyebrow}
-            </div>
-
-            <h2 style={{fontSize:36}}>
-              {site.why.title}
-            </h2>
-
-            <p className="muted">
-              {site.why.text}
-            </p>
-
-          </div>
-
-          <div style={{display:'grid',gap:10}}>
-
-            {(site.why.points||[]).map((point:string,index:number)=>(
-              <div className="notice" key={index}>
-
-                {index===0&&<ShieldCheck size={18}/>}
-                {index===1&&<Truck size={18}/>}
-                {index===2&&<Star size={18}/>}
-
-                {point}
-
-              </div>
-            ))}
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <SearchBar/>
-
-
-      {/* LIVE CATEGORIES */}
-
-      {!loading&&categories
-        .filter((cat:any)=>(
-          homeConfig.categories.length===0 ||
-          homeConfig.categories.some((x:any)=>String(x.category_id)===String(cat.id))
-        ))
-        .sort((a:any,b:any)=>{
-          const ao=homeConfig.categories.find((x:any)=>String(x.category_id)===String(a.id))?.sort_order ?? a.sort_order ?? 0;
-          const bo=homeConfig.categories.find((x:any)=>String(x.category_id)===String(b.id))?.sort_order ?? b.sort_order ?? 0;
-          return Number(ao)-Number(bo);
-        })
-        .map((cat:any,index:number)=>{
-
-        const ids=homeConfig.products
-          .filter((x:any)=>(
-            String(x.category_id)===String(cat.id) &&
-            x.enabled!==false
-          ))
-          .sort((a:any,b:any)=>Number(a.sort_order||0)-Number(b.sort_order||0))
-          .map((x:any)=>String(x.product_id));
-
-        const list=products
-          .filter((p:any)=>ids.includes(String(p.id)))
-          .slice(0,2);
-
-        if(!list.length)return null;
-
-        return (
-          <section className="section" key={cat.id}>
-
-            <div className={`catBanner ${cat.tone||'rose'}`}>
-
-              <div className="catContent">
-
-                <div className="eyebrow">
-                  Curated category
-                </div>
-
-                <h3>{cat.name}</h3>
-
-                <div className="muted">
-                  {cat.tagline}
-                </div>
-
-              </div>
-
-            </div>
-
-            <div className="sectionHead">
-
-              <div>
-
-                <h2>{cat.name}</h2>
-
-                <div className="muted">
-                  {cat.subs?.join(' · ')||''}
-                </div>
-
-              </div>
-
-              <Link
-                href={`/category/${cat.slug||cat.id}`}
-                className="btn ghost"
-              >
-                View more
+              <Link className="button" href={site.hero.buttonLink || "/"}>
+                {site.hero.buttonText || "Shop Now"}
               </Link>
-
             </div>
-
-            <div className="grid">
-
-              {list.map((product:any)=>(
-                <ProductCard
-                  key={product.id}
-                  p={{
-                    ...product,
-                    slug:product.slug||String(product.id),
-                    name:product.name||product.title,
-                    use:product.use_text||product.use||''
-                  }}
-                />
-              ))}
-
-            </div>
-
-          </section>
-        );
-      })}
-
-
-      {/* HELP */}
-
-      <section className="section">
-
-        <div className="heroSide">
-
-          <div>
-
-            <div className="eyebrow">
-              Need help?
-            </div>
-
-            <h2>
-              Chat with A.U SHOP
-            </h2>
-
-            <p className="muted">
-              Ask about products, availability or your order.
-            </p>
-
           </div>
+        </section>
 
-          <a
-            className="btn primary"
-            href="https://wa.me/923160478318?text=hello%2C%20Can%20I%20get%20more%20information%20about%20this"
-            target="_blank"
-          >
-            <MessageCircle size={17}/>
-            WhatsApp us
-          </a>
+        {site.showcase?.length > 0 && (
+          <section className="section">
+            <div className="sectionHead">
+              <div>
+                <div className="eyebrow">FEATURED</div>
+                <h2>Featured Collections</h2>
+              </div>
+            </div>
 
-        </div>
+            <div className="showcaseGrid">
+              {site.showcase.map((item, index) => (
+                <div className="showcaseCard" key={`${item.title}-${index}`}>
+                  {item.image && (
+                    <img src={item.image} alt={item.title || "Featured"} />
+                  )}
 
-      </section>
+                  <div className="showcaseContent">
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
 
-    </main>
+                    {item.buttonText && (
+                      <Link
+                        href={item.buttonLink || "/"}
+                        className="button"
+                      >
+                        {item.buttonText}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {visibleCategories.map((category) => {
+          const categoryProducts = getCategoryProducts(category.id);
+
+          if (!categoryProducts.length) return null;
+
+          return (
+            <section className="section" key={String(category.id)}>
+              <div className="sectionHead">
+                <div>
+                  <div className="eyebrow">SHOP</div>
+                  <h2>{category.name}</h2>
+                </div>
+
+                <Link
+                  href={`/category/${category.id}`}
+                  className="textLink"
+                >
+                  View All
+                </Link>
+              </div>
+
+              <div className="productGrid">
+                {categoryProducts.map((product) => (
+                  <ProductCard
+                    key={String(product.id)}
+                    p={product}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </main>
+
+      {showTop && (
+        <button
+          type="button"
+          className="backToTop"
+          onClick={scrollTop}
+          aria-label="Back to top"
+        >
+          <ArrowUp size={20} />
+        </button>
+      )}
+    </>
   );
 }
