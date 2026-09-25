@@ -1588,3 +1588,37 @@ html[data-theme="dark"] .notice {
 
 }
 
+
+/* Showcase CMS links */
+.beautySlideLink{
+  display:block;
+  flex:0 0 100%;
+  width:100%;
+  color:inherit;
+  text-decoration:none;
+}
+
+.beautySlideLink .beautySlide{
+  width:100%;
+}
+
+.beautySlideButton{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:10px;
+  width:max-content;
+  min-width:120px;
+  text-decoration:none;
+}
+
+.beautySlideOverlay{
+  pointer-events:none;
+}
+
+@media(max-width:520px){
+  .beautySlideButton{
+    margin-top:7px;
+    min-width:105px;
+  }
+}

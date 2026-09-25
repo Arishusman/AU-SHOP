@@ -156,36 +156,68 @@ export default function LiveHome(){
               }}
             >
 
-              {site.showcase.map((slide:any,index:number)=>(
-                <div
-                  className="beautySlide"
-                  key={index}
-                >
+              {site.showcase.map((slide:any,index:number)=>{
 
-                  <img
-                    src={slide.image}
-                    alt={slide.title||'A.U SHOP beauty collection'}
-                    loading={index===0?'eager':'lazy'}
-                  />
+                const href=String(slide.href||'').trim();
+                const title=slide.title||'A.U SHOP beauty collection';
+                const text=slide.text||'';
+                const buttonText=slide.button_text||'Shop now';
 
-                  <div className="beautySlideOverlay">
+                const content=(
+                  <div
+                    className="beautySlide"
+                    key={index}
+                  >
 
-                    <div className="eyebrow">
-                      A.U SHOP BEAUTY
+                    <img
+                      src={slide.image}
+                      alt={title}
+                      loading={index===0?'eager':'lazy'}
+                    />
+
+                    <div className="beautySlideOverlay">
+
+                      <div className="eyebrow">
+                        A.U SHOP BEAUTY
+                      </div>
+
+                      {slide.title&&(
+                        <h2>
+                          {slide.title}
+                        </h2>
+                      )}
+
+                      {text&&(
+                        <p>
+                          {text}
+                        </p>
+                      )}
+
+                      {href&&buttonText&&(
+                        <span className="btn primary beautySlideButton">
+                          {buttonText}
+                        </span>
+                      )}
+
                     </div>
 
-                    <h2>
-                      {slide.title}
-                    </h2>
-
-                    <p>
-                      {slide.text}
-                    </p>
-
                   </div>
+                );
 
-                </div>
-              ))}
+                if(!href)return content;
+
+                return (
+                  <a
+                    key={index}
+                    href={href}
+                    className="beautySlideLink"
+                    target={href.startsWith('http')?'_blank':undefined}
+                    rel={href.startsWith('http')?'noopener noreferrer':undefined}
+                  >
+                    {content}
+                  </a>
+                );
+              })}
 
             </div>
 
@@ -206,7 +238,6 @@ export default function LiveHome(){
 
         </section>
       )}
-
 
       {/* WHY A.U SHOP */}
 
