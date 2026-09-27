@@ -474,11 +474,33 @@ export default function LiveHome() {
                   return (
                     <div className="showcaseSlide">
                       <div className="showcaseImageWrap">
+
                         {slide.image ? (
-                          <img
-                            src={slide.image}
-                            alt={slide.title || "Featured collection"}
-                          />
+                          isExternal(href) ? (
+                            <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="showcaseImageLink"
+                              aria-label={slide.title || "View featured collection"}
+                            >
+                              <img
+                                src={slide.image}
+                                alt={slide.title || "Featured collection"}
+                              />
+                            </a>
+                          ) : (
+                            <Link
+                              href={href}
+                              className="showcaseImageLink"
+                              aria-label={slide.title || "View featured collection"}
+                            >
+                              <img
+                                src={slide.image}
+                                alt={slide.title || "Featured collection"}
+                              />
+                            </Link>
+                          )
                         ) : (
                           <div className="showcaseImagePlaceholder">
                             A.U SHOP
@@ -486,31 +508,35 @@ export default function LiveHome() {
                         )}
 
                         <div className="showcaseOverlay">
-                          {slide.title && <h3>{slide.title}</h3>}
 
-                          {slide.text && <p>{slide.text}</p>}
+                          <div className="showcaseOverlayText">
+                            {slide.title && <h3>{slide.title}</h3>}
+
+                            {slide.text && <p>{slide.text}</p>}
+                          </div>
+
+                          <div className="showcaseDetailButton">
+                            {isExternal(href) ? (
+                              <a
+                                className="button"
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {slide.buttonText || "View Detail"}
+                              </a>
+                            ) : (
+                              <Link
+                                className="button"
+                                href={href}
+                              >
+                                {slide.buttonText || "View Detail"}
+                              </Link>
+                            )}
+                          </div>
+
                         </div>
-                      </div>
 
-                      <div className="showcaseBottom">
-                        {isExternal(href) ? (
-                          <a
-                            className="button"
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {slide.buttonText || "View Detail"}
-                          </a>
-                        ) : (
-                          <Link className="button" href={href}>
-                            {slide.buttonText || "View Detail"}
-                          </Link>
-                        )}
-
-                        <span className="showcaseSwipeHint">
-                          Swipe to explore
-                        </span>
                       </div>
                     </div>
                   );

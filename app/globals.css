@@ -3153,3 +3153,161 @@ html[data-theme="dark"] .notice {
   object-fit:contain;
 }
 
+
+/* =========================================================
+   FINAL SHOWCASE DESIGN
+   Image + text + View Detail button all inside image
+   ========================================================= */
+
+.homeShowcaseSection .showcaseSlide{
+  width:100%;
+}
+
+.homeShowcaseSection .showcaseImageWrap{
+  position:relative;
+  width:100%;
+  aspect-ratio:1.48 / 1;
+  overflow:hidden;
+  border-radius:24px;
+  background:var(--surface2);
+  isolation:isolate;
+}
+
+/* Clickable image */
+.homeShowcaseSection .showcaseImageLink{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  display:block;
+}
+
+.homeShowcaseSection .showcaseImageLink img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  transition:transform .35s ease;
+}
+
+.homeShowcaseSection .showcaseImageLink:hover img{
+  transform:scale(1.025);
+}
+
+/* Text overlay */
+.homeShowcaseSection .showcaseOverlay{
+  position:absolute;
+  z-index:2;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:flex-start;
+  padding:80px 26px 24px;
+  color:#fff;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.76) 0%,
+      rgba(0,0,0,.48) 34%,
+      rgba(0,0,0,.10) 65%,
+      transparent 100%
+    );
+}
+
+/* Keep text above image */
+.homeShowcaseSection .showcaseOverlayText{
+  max-width:720px;
+}
+
+.homeShowcaseSection .showcaseOverlay h3{
+  margin:0 0 7px;
+  color:#fff;
+  font-size:29px;
+  line-height:1.15;
+  font-weight:700;
+}
+
+.homeShowcaseSection .showcaseOverlay p{
+  margin:0;
+  color:#fff;
+  font-size:16px;
+  line-height:1.5;
+  max-width:650px;
+}
+
+/* View Detail button */
+.homeShowcaseSection .showcaseDetailButton{
+  margin-top:15px;
+  pointer-events:auto;
+}
+
+.homeShowcaseSection .showcaseDetailButton .button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:125px;
+  min-height:44px;
+  padding:10px 20px;
+  border-radius:999px;
+  background:#fff;
+  color:var(--text);
+  border:1px solid rgba(255,255,255,.8);
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 8px 22px rgba(0,0,0,.14);
+}
+
+.homeShowcaseSection .showcaseDetailButton .button:hover{
+  transform:translateY(-1px);
+}
+
+/* Remove old separate bottom area completely */
+.homeShowcaseSection .showcaseBottom{
+  display:none !important;
+}
+
+.homeShowcaseSection .showcaseSwipeHint{
+  display:none !important;
+}
+
+/* Keep arrows exactly as navigation controls */
+.homeShowcaseSection .showcaseControl{
+  z-index:5;
+}
+
+/* Mobile */
+@media (max-width:700px){
+
+  .homeShowcaseSection .showcaseImageWrap{
+    aspect-ratio:1.38 / 1;
+    border-radius:22px;
+  }
+
+  .homeShowcaseSection .showcaseOverlay{
+    padding:75px 18px 18px;
+  }
+
+  .homeShowcaseSection .showcaseOverlay h3{
+    font-size:24px;
+    line-height:1.15;
+    margin-bottom:6px;
+  }
+
+  .homeShowcaseSection .showcaseOverlay p{
+    font-size:14px;
+    line-height:1.45;
+  }
+
+  .homeShowcaseSection .showcaseDetailButton{
+    margin-top:12px;
+  }
+
+  .homeShowcaseSection .showcaseDetailButton .button{
+    min-height:40px;
+    min-width:112px;
+    padding:8px 17px;
+    font-size:14px;
+  }
+}
+
