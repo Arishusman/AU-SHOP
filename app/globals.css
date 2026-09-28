@@ -3611,3 +3611,46 @@ html[data-theme="dark"] .notice {
     min-height: 0 !important;
   }
 }
+
+/* Showcase Section Customization */
+.featured-collection-card, 
+[class*="Featured"] [class*="collection"] {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important; /* Text aur button ko nichy shift krny k liye */
+    align-items: flex-end !important;    /* Content ko right (dusri) side pr shift krny k liye */
+    padding: 16px !important;
+}
+
+/* Heading text ko chotta krna */
+.featured-collection-card h2,
+[class*="Featured"] h2,
+[class*="Featured"] [class*="title"] {
+    font-size: 1.25rem !important; /* Text size chotta kiya */
+    text-align: right !important;
+    margin-bottom: 4px !important;
+    max-width: 80% !important;
+}
+
+/* Description text ko chotta krna */
+.featured-collection-card p,
+[class*="Featured"] p {
+    font-size: 0.85rem !important; /* Text size chotta kiya */
+    text-align: right !important;
+    margin-bottom: 12px !important;
+    max-width: 80% !important;
+}
+
+/* Shop Now Button Styling */
+.featured-collection-card button,
+.featured-collection-card a[class*="button"],
+[class*="Featured"] button,
+[class*="Featured"] [class*="btn"] {
+    background-color: rgba(255, 255, 255, 0.65) !important; /* Semi-permeable (transparent) white background */
+    backdrop-filter: blur(4px) !important;                  /* Smooth glassy effect */
+    color: #000000 !important;                             /* Black text color */
+    font-size: 0.85rem !important;                          /* Button text chotta kiya */
+    padding: 6px 16px !important;
+    border-radius: 20px !important;
+    align-self: flex-end !important;                        /* Button ko right side pr rakhny k liye */
+}
