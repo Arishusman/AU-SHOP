@@ -3654,3 +3654,75 @@ html[data-theme="dark"] .notice {
     border-radius: 20px !important;
     align-self: flex-end !important;                        /* Button ko right side pr rakhny k liye */
 }
+
+/* =========================================================
+   SHOWCASE — TEXT LOWER + SMALLER + BUTTON SIDE
+   ========================================================= */
+
+.homeShowcaseSection .showcaseOverlay{
+  padding: 20px 26px 18px !important;
+  justify-content: flex-end !important;
+}
+
+.homeShowcaseSection .showcaseOverlayText{
+  max-width: 52% !important;
+  margin-left: auto !important;
+  text-align: right !important;
+}
+
+.homeShowcaseSection .showcaseOverlay h3{
+  font-size: 22px !important;
+  line-height: 1.15 !important;
+  margin: 0 0 5px !important;
+}
+
+.homeShowcaseSection .showcaseOverlay p{
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+}
+
+.homeShowcaseSection .showcaseDetailButton{
+  margin-top: 9px !important;
+  align-self: flex-end !important;
+}
+
+.homeShowcaseSection .showcaseDetailButton .button{
+  min-width: 105px !important;
+  min-height: 36px !important;
+  padding: 7px 15px !important;
+  font-size: 13px !important;
+  border-radius: 999px !important;
+}
+
+/* MOBILE */
+@media (max-width:700px){
+  .homeShowcaseSection .showcaseOverlay{
+    padding: 16px 16px 14px !important;
+  }
+
+  .homeShowcaseSection .showcaseOverlayText{
+    max-width: 62% !important;
+  }
+
+  .homeShowcaseSection .showcaseOverlay h3{
+    font-size: 18px !important;
+  }
+
+  .homeShowcaseSection .showcaseOverlay p{
+    font-size: 10px !important;
+    line-height: 1.35 !important;
+  }
+
+  .homeShowcaseSection .showcaseDetailButton{
+    margin-top: 7px !important;
+  }
+
+  .homeShowcaseSection .showcaseDetailButton .button{
+    min-width: 92px !important;
+    min-height: 32px !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+}
+
