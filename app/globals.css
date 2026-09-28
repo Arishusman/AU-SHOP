@@ -3546,3 +3546,68 @@ html[data-theme="dark"] .notice {
   }
 }
 
+
+/* =========================================================
+   FINAL RESPONSIVE IMAGE SIZES
+   Showcase: 1000 × 667
+   Category Banner: 1024 × 480
+   ========================================================= */
+
+/* SHOWCASE */
+.homeShowcaseSection .showcaseViewport,
+.homeShowcaseSection .showcaseSlide,
+.homeShowcaseSection .showcaseImageWrap {
+  width: 100%;
+  aspect-ratio: 1000 / 667 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: hidden;
+}
+
+.homeShowcaseSection .showcaseImageWrap img,
+.homeShowcaseSection .showcaseImageLink img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1000 / 667 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block;
+}
+
+/* CATEGORY BANNER */
+#home-categories .categoryBannerImage,
+#home-categories .categoryBanner {
+  width: 100% !important;
+  aspect-ratio: 1024 / 480 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: hidden;
+}
+
+#home-categories .categoryBannerImage img,
+#home-categories .categoryBanner img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1024 / 480 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block;
+}
+
+/* MOBILE — same ratio, automatically smaller */
+@media (max-width: 700px) {
+  .homeShowcaseSection .showcaseViewport,
+  .homeShowcaseSection .showcaseSlide,
+  .homeShowcaseSection .showcaseImageWrap {
+    aspect-ratio: 1000 / 667 !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  #home-categories .categoryBannerImage,
+  #home-categories .categoryBanner {
+    aspect-ratio: 1024 / 480 !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+}
