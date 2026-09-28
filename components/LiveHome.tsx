@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
-  ArrowUp,
   MessageCircle,
   ShieldCheck,
   Star,
@@ -403,15 +402,7 @@ export default function LiveHome() {
       .getElementById("home-categories")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
-
-  const scrollTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const whatsappMessage = encodeURIComponent(
+const whatsappMessage = encodeURIComponent(
     "Assalam o Alaikum! 👋\n\nMain A.U SHOP se products ke bare mein maloomat lena chahta hoon.\n\nPlease mujhe products aur ordering ke bare mein guide kar dein."
   );
 
@@ -703,17 +694,6 @@ export default function LiveHome() {
           </div>
         </section>
       </main>
-
-      {showTop && (
-        <button
-          type="button"
-          className="backToTop"
-          onClick={scrollTop}
-          aria-label="Back to top"
-        >
-          <ArrowUp size={20} />
-        </button>
-      )}
     </>
   );
 }
