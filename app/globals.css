@@ -3761,3 +3761,39 @@ html[data-theme="dark"] .notice {
   }
 }
 
+
+/* =========================================================
+   SHOWCASE IMAGE — SHOW FULL IMAGE, NO CROPPING
+   Frame size remains unchanged
+   ========================================================= */
+
+.homeShowcaseSection .showcaseImageWrap,
+.homeShowcaseSection .showcaseViewport,
+.homeShowcaseSection .showcaseSlide{
+  overflow: hidden !important;
+}
+
+.homeShowcaseSection .showcaseImageWrap{
+  background: #F7F4EF !important;
+}
+
+.homeShowcaseSection .showcaseImageWrap img,
+.homeShowcaseSection .showcaseImageLink img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  display: block !important;
+}
+
+/* Mobile — same frame size, full image visible */
+@media (max-width:700px){
+  .homeShowcaseSection .showcaseImageWrap img,
+  .homeShowcaseSection .showcaseImageLink img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+  }
+}
+
