@@ -3295,3 +3295,68 @@ html[data-theme="dark"] .notice {
   }
 }
 
+
+/* =========================================================
+   HOME SHOWCASE — IMAGE RATIO FIX
+   ========================================================= */
+
+.homeShowcaseSection .showcaseViewport{
+  width:100%;
+  overflow:hidden;
+}
+
+.homeShowcaseSection .showcaseSlide{
+  width:100%;
+  overflow:hidden;
+}
+
+.homeShowcaseSection .showcaseImageWrap{
+  position:relative !important;
+  width:100% !important;
+  aspect-ratio:1536 / 857 !important;
+  height:auto !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+  background:#F7F4EF;
+}
+
+.homeShowcaseSection .showcaseImageLink{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+}
+
+.homeShowcaseSection .showcaseImageWrap img,
+.homeShowcaseSection .showcaseImageLink img{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+}
+
+@media (max-width:700px){
+  .homeShowcaseSection .showcaseImageWrap{
+    aspect-ratio:1536 / 857 !important;
+  }
+
+  .homeShowcaseSection .showcaseImageWrap img,
+  .homeShowcaseSection .showcaseImageLink img{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    margin:0 !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+  }
+}
+
