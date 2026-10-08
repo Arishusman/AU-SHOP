@@ -3071,41 +3071,75 @@ html[data-theme="dark"] .notice {
 }
 
 /* =========================================================
-   FINAL SHOWCASE DESIGN
-   Image + text + View Detail button all inside image
+   HOME SHOWCASE — CLEAN FINAL VERSION
    ========================================================= */
+.homeShowcaseSection{
+  width:100%;
+  margin-top:8px;
+}
+
+.homeShowcaseSection .showcaseSlider{
+  position:relative;
+  width:100%;
+  touch-action:pan-y;
+}
+
+.homeShowcaseSection .showcaseViewport{
+  width:100%;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
 
 .homeShowcaseSection .showcaseSlide{
   width:100%;
 }
 
-.homeShowcaseSection 
+.homeShowcaseSection .showcaseImageWrap{
+  position:relative !important;
+  width:100%;
+  aspect-ratio:1000 / 667;
+  height:auto;
+  min-height:0;
+  overflow:hidden;
+  background:#F7F4EF;
+}
 
-/* Clickable image */
 .homeShowcaseSection .showcaseImageLink{
   position:absolute;
   inset:0;
   z-index:1;
   display:block;
+  width:100%;
+  height:100%;
 }
 
+.homeShowcaseSection .showcaseImageWrap img,
 .homeShowcaseSection .showcaseImageLink img{
   width:100%;
   height:100%;
   display:block;
-  object-fit:cover;
-  transition:transform .35s ease;
+  object-fit:contain;
+  object-position:center center;
 }
 
-.homeShowcaseSection .showcaseImageLink:hover img{
-  transform:scale(1.025);
+.homeShowcaseSection .showcaseImagePlaceholder{
+  width:100%;
+  height:100%;
+  min-height:320px;
+  display:grid;
+  place-items:center;
+  font-size:42px;
+  font-weight:800;
+  letter-spacing:.04em;
 }
 
-/* Text overlay */
 .homeShowcaseSection .showcaseOverlay{
   position:absolute;
-  z-index:2;
   inset:0;
+  z-index:2;
   display:flex;
   flex-direction:column;
   justify-content:flex-end;
@@ -3113,40 +3147,36 @@ html[data-theme="dark"] .notice {
   padding:80px 26px 24px;
   color:#fff;
   pointer-events:none;
-  background:
-    linear-gradient(
-      to top,
-      rgba(0,0,0,.76) 0%,
-      rgba(0,0,0,.48) 34%,
-      rgba(0,0,0,.10) 65%,
-      transparent 100%
-    );
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,.68) 0%,
+    rgba(0,0,0,.32) 35%,
+    rgba(0,0,0,0) 70%
+  );
 }
 
-/* Keep text above image */
 .homeShowcaseSection .showcaseOverlayText{
-  max-width:720px;
-}
-
-.homeShowcaseSection .showcaseOverlay h3{
-  margin:0 0 7px;
-  color:#fff;
-  font-size:29px;
-  line-height:1.15;
-  font-weight:700;
-}
-
-.homeShowcaseSection .showcaseOverlay p{
+  width:100%;
+  max-width:100%;
   margin:0;
-  color:#fff;
-  font-size:16px;
-  line-height:1.5;
-  max-width:650px;
+  text-align:left;
 }
 
-/* View Detail button */
+.homeShowcaseSection .showcaseOverlayText h3{
+  margin:0 0 6px;
+  font-size:clamp(20px,3vw,34px);
+  line-height:1.1;
+}
+
+.homeShowcaseSection .showcaseOverlayText p{
+  margin:0;
+  max-width:680px;
+  font-size:14px;
+  line-height:1.5;
+}
+
 .homeShowcaseSection .showcaseDetailButton{
-  margin-top:15px;
+  margin-top:14px;
   pointer-events:auto;
 }
 
@@ -3154,646 +3184,114 @@ html[data-theme="dark"] .notice {
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  min-width:125px;
-  min-height:44px;
-  padding:10px 20px;
-  border-radius:999px;
-  background:#fff;
-  color:var(--text);
-  border:1px solid rgba(255,255,255,.8);
-  text-decoration:none;
-  font-weight:600;
-  box-shadow:0 8px 22px rgba(0,0,0,.14);
 }
 
-.homeShowcaseSection .showcaseDetailButton .button:hover{
-  transform:translateY(-1px);
-}
-
-/* Remove old separate bottom area completely */
-.homeShowcaseSection .showcaseBottom{
-  display:none !important;
-}
-
-.homeShowcaseSection .showcaseSwipeHint{
-  display:none !important;
-}
-
-/* Keep arrows exactly as navigation controls */
 .homeShowcaseSection .showcaseControl{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
   z-index:5;
-}
-
-/* Mobile */
-@media (max-width:700px){
-
-  .homeShowcaseSection 
-
-  .homeShowcaseSection .showcaseOverlay{
-    padding:75px 18px 18px;
-  }
-
-  .homeShowcaseSection .showcaseOverlay h3{
-    font-size:24px;
-    line-height:1.15;
-    margin-bottom:6px;
-  }
-
-  .homeShowcaseSection .showcaseOverlay p{
-    font-size:14px;
-    line-height:1.45;
-  }
-
-  .homeShowcaseSection .showcaseDetailButton{
-    margin-top:12px;
-  }
-
-  .homeShowcaseSection .showcaseDetailButton .button{
-    min-height:40px;
-    min-width:112px;
-    padding:8px 17px;
-    font-size:14px;
-  }
-}
-
-/* ===== SHOWCASE 1000x667 LAYOUT ===== */
-
-
-
-.showcaseImageWrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.showcaseOverlay {
-  position: absolute;
-  inset: auto 0 0 0;
-  z-index: 2;
-  padding: 28px 36px 30px;
-}
-
-.showcaseBottom {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end !important;
-  gap: 14px;
-  padding: 14px 18px 0;
-}
-
-.showcaseBottom .button {
-  font-size: 15px !important;
-  padding: 11px 24px !important;
-  min-height: auto !important;
-  border-radius: 999px !important;
-}
-
-.showcaseSwipeHint {
-  display: none;
-}
-
-/* Keep arrows exactly as controls */
-.showcaseControl {
-  z-index: 10;
-}
-
-/* Mobile */
-@media (max-width: 700px) {
-  
-
-  .showcaseOverlay {
-    padding: 22px 28px 24px;
-  }
-
-  .showcaseOverlay h3 {
-    font-size: 26px !important;
-    line-height: 1.15;
-    margin-bottom: 8px;
-  }
-
-  .showcaseOverlay p {
-    font-size: 17px !important;
-    line-height: 1.45;
-  }
-
-  .showcaseBottom {
-    justify-content: flex-end !important;
-    padding: 12px 14px 0;
-  }
-
-  .showcaseBottom .button {
-    font-size: 14px !important;
-    padding: 10px 20px !important;
-  }
-}
-
-/* ===== HOME CATEGORY BANNER ===== */
-
-.categoryBannerImage {
-  width: 100%;
-  aspect-ratio: 1024 / 480 !important;
-  height: auto !important;
-  overflow: hidden;
-  position: relative;
-}
-
-.categoryBannerImage img {
-  width: 100%;
-  height: 100% !important;
-  object-fit: cover;
-  display: block;
-}
-
-/* A.U SHOP floating WhatsApp */
-.floatingWhatsapp{
-  position:fixed;
-  right:16px;
-  bottom:156px;
-  z-index:41;
-  width:54px;
-  height:54px;
+  width:42px;
+  height:42px;
+  border:1px solid rgba(255,255,255,.45);
   border-radius:50%;
   display:grid;
   place-items:center;
-  background:#25D366;
+  background:rgba(0,0,0,.35);
   color:#fff;
-  text-decoration:none;
-  border:3px solid #fff;
-  box-shadow:0 8px 24px rgba(0,0,0,.18);
-  transition:transform .2s ease,box-shadow .2s ease;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
 }
 
-.floatingWhatsapp svg{
-  width:29px;
-  height:29px;
-  display:block;
+.homeShowcaseSection .showcaseControlLeft{
+  left:16px;
 }
 
-.floatingWhatsapp:hover{
-  transform:translateY(-2px) scale(1.04);
-  box-shadow:0 10px 28px rgba(0,0,0,.22);
+.homeShowcaseSection .showcaseControlRight{
+  right:16px;
 }
 
-@media(max-width:520px){
-  .floatingWhatsapp{
-    right:16px;
-    bottom:156px;
-    width:52px;
-    height:52px;
-  }
-
-  .floatingWhatsapp svg{
-    width:28px;
-    height:28px;
-  }
-}
-
-/* =========================================================
-   FINAL GLOBAL FLOATING BUTTONS
-   ONE Back-to-Top + ONE WhatsApp
-   Same size / same height
-   Small gap above bottom navigation
-   ========================================================= */
-
-.globalBackToTop,
-.floatingWhatsapp{
-  position:fixed !important;
-  bottom:92px !important;
-  width:58px !important;
-  height:58px !important;
-  min-width:58px !important;
-  min-height:58px !important;
-  border-radius:50% !important;
-  display:grid !important;
-  place-items:center !important;
-  box-sizing:border-box !important;
-  z-index:80 !important;
-}
-
-.globalBackToTop{
-  left:16px !important;
-  right:auto !important;
-  border:1px solid var(--line) !important;
-  background:#FFFFFF !important;
-  color:var(--text) !important;
-  box-shadow:0 8px 24px rgba(60,40,40,.14) !important;
-  cursor:pointer !important;
-  padding:0 !important;
-}
-
-.globalBackToTop:hover{
-  transform:translateY(-2px);
-}
-
-.floatingWhatsapp{
-  right:16px !important;
-  left:auto !important;
-  border:3px solid #FFFFFF !important;
-  background:#25D366 !important;
-  color:#FFFFFF !important;
-  box-shadow:0 8px 24px rgba(37,211,102,.28) !important;
-  text-decoration:none !important;
-  padding:0 !important;
-}
-
-.floatingWhatsapp svg{
-  width:31px !important;
-  height:31px !important;
-}
-
-.bottomNav{
-  z-index:70 !important;
-}
-
-/* Mobile: only a small gap between floating buttons and bottom nav */
-@media(max-width:520px){
-  .globalBackToTop,
-  .floatingWhatsapp{
-    bottom:92px !important;
-    width:58px !important;
-    height:58px !important;
-    min-width:58px !important;
-    min-height:58px !important;
-  }
-
-  .globalBackToTop{
-    left:16px !important;
-  }
-
-  .floatingWhatsapp{
-    right:16px !important;
-  }
-}
-
-/* FINAL MOBILE POSITION — bottom nav flush with screen bottom */
-@media (max-width: 520px) {
-  .bottomNav {
-    bottom: 0 !important;
-  }
-}
-
-
-
-/* =========================================================
-   FINAL FLOATING BUTTONS
-   ========================================================= */
-
-@media (max-width:520px){
-
-  /* Bottom navigation touches the screen bottom */
-  .bottomNav{
-    bottom:0 !important;
-    z-index:70 !important;
-  }
-
-  /* Back-to-top + WhatsApp */
-  .globalBackToTop,
-  .floatingWhatsapp{
-    width:58px !important;
-    height:58px !important;
-    bottom:96px !important;
-    z-index:60 !important;
-  }
-
-}
-
-/* =========================================================
-   SHOWCASE IMAGE — EXACT 1000 × 667 RATIO
-   ========================================================= */
-
-.beautyShowcase{
-  width:100%;
-}
-
-.beautyShowcaseFrame{
-  width:100%;
-  aspect-ratio:1000 / 667;
-  overflow:hidden;
-  position:relative;
-}
-
-.beautyShowcaseTrack{
-  width:100%;
-  height:100%;
+.homeShowcaseSection .showcaseDots{
   display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+  margin-top:14px;
 }
 
-.beautySlide{
-  width:100%;
-  height:100%;
-  flex:0 0 100%;
-  position:relative;
-  overflow:hidden;
+.homeShowcaseSection .showcaseDot{
+  width:8px;
+  height:8px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgba(0,0,0,.25);
+  cursor:pointer;
 }
 
-.beautySlide img,
-.showcaseImageWrap img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
-  object-position:center;
+.homeShowcaseSection .showcaseDot.active{
+  width:24px;
+  border-radius:999px;
+  background:currentColor;
 }
 
-@media (max-width:520px){
-  .beautyShowcaseFrame{
+/* Mobile */
+@media (max-width:700px){
+
+  .homeShowcaseSection .showcaseViewport{
+    border-radius:18px;
+  }
+
+  .homeShowcaseSection .showcaseImageWrap{
     aspect-ratio:1000 / 667;
   }
 
-  .beautySlide{
-    height:100%;
-  }
-
-  .beautySlide img,
-  .showcaseImageWrap img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
-  }
-}
-
-/* =========================================================
-   HOME CATEGORY BANNER — 1024 × 480
-   ========================================================= */
-
-.categoryBanner{
-  width:100%;
-  aspect-ratio:1024 / 480;
-  overflow:hidden;
-  position:relative;
-}
-
-.categoryBanner img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
-  object-position:center;
-}
-
-@media (max-width:520px){
-  .categoryBanner{
-    aspect-ratio:1024 / 480;
-  }
-
-  .categoryBanner img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
-  }
-}
-
-
-/* =========================================================
-   FINAL RESPONSIVE IMAGE SIZES
-   Showcase: 1000 × 667
-   Category Banner: 1024 × 480
-   ========================================================= */
-
-/* SHOWCASE */
-.homeShowcaseSection .showcaseViewport,
-.homeShowcaseSection .showcaseSlide,
-.homeShowcaseSection .showcaseImageWrap {
-  width: 100%;
-  aspect-ratio: 1000 / 667 !important;
-  height: auto !important;
-  min-height: 0 !important;
-  overflow: hidden;
-}
-
-.homeShowcaseSection .showcaseImageWrap img,
-.homeShowcaseSection .showcaseImageLink img {
-  width: 100% !important;
-  height: 100% !important;
-  aspect-ratio: 1000 / 667 !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  display: block;
-}
-
-/* CATEGORY BANNER */
-#home-categories .categoryBannerImage,
-#home-categories .categoryBanner {
-  width: 100% !important;
-  aspect-ratio: 1024 / 480 !important;
-  height: auto !important;
-  min-height: 0 !important;
-  overflow: hidden;
-}
-
-#home-categories .categoryBannerImage img,
-#home-categories .categoryBanner img {
-  width: 100% !important;
-  height: 100% !important;
-  aspect-ratio: 1024 / 480 !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  display: block;
-}
-
-/* MOBILE — same ratio, automatically smaller */
-@media (max-width: 700px) {
-  .homeShowcaseSection .showcaseViewport,
-  .homeShowcaseSection .showcaseSlide,
-  .homeShowcaseSection .showcaseImageWrap {
-    aspect-ratio: 1000 / 667 !important;
-    height: auto !important;
-    min-height: 0 !important;
-  }
-
-  #home-categories .categoryBannerImage,
-  #home-categories .categoryBanner {
-    aspect-ratio: 1024 / 480 !important;
-    height: auto !important;
-    min-height: 0 !important;
-  }
-}
-
-/* Showcase Section Customization */
-.featured-collection-card, 
-[class*="Featured"] [class*="collection"] {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-end !important; /* Text aur button ko nichy shift krny k liye */
-    align-items: flex-end !important;    /* Content ko right (dusri) side pr shift krny k liye */
-    padding: 16px !important;
-}
-
-/* Heading text ko chotta krna */
-.featured-collection-card h2,
-[class*="Featured"] h2,
-[class*="Featured"] [class*="title"] {
-    font-size: 1.25rem !important; /* Text size chotta kiya */
-    text-align: right !important;
-    margin-bottom: 4px !important;
-    max-width: 80% !important;
-}
-
-/* Description text ko chotta krna */
-.featured-collection-card p,
-[class*="Featured"] p {
-    font-size: 0.85rem !important; /* Text size chotta kiya */
-    text-align: right !important;
-    margin-bottom: 12px !important;
-    max-width: 80% !important;
-}
-
-/* Shop Now Button Styling */
-.featured-collection-card button,
-.featured-collection-card a[class*="button"],
-[class*="Featured"] button,
-[class*="Featured"] [class*="btn"] {
-    background-color: rgba(255, 255, 255, 0.65) !important; /* Semi-permeable (transparent) white background */
-    backdrop-filter: blur(4px) !important;                  /* Smooth glassy effect */
-    color: #000000 !important;                             /* Black text color */
-    font-size: 0.85rem !important;                          /* Button text chotta kiya */
-    padding: 6px 16px !important;
-    border-radius: 20px !important;
-    align-self: flex-end !important;                        /* Button ko right side pr rakhny k liye */
-}
-
-/* =========================================================
-   SHOWCASE — TEXT LOWER + SMALLER + BUTTON SIDE
-   ========================================================= */
-
-.homeShowcaseSection .showcaseOverlay{
-  padding: 20px 26px 18px !important;
-  justify-content: flex-end !important;
-}
-
-.homeShowcaseSection .showcaseOverlayText{
-  max-width: 52% !important;
-  margin-left: auto !important;
-  text-align: right !important;
-}
-
-.homeShowcaseSection .showcaseOverlay h3{
-  font-size: 22px !important;
-  line-height: 1.15 !important;
-  margin: 0 0 5px !important;
-}
-
-.homeShowcaseSection .showcaseOverlay p{
-  font-size: 12px !important;
-  line-height: 1.4 !important;
-  margin: 0 !important;
-}
-
-.homeShowcaseSection .showcaseDetailButton{
-  margin-top: 9px !important;
-  align-self: flex-end !important;
-}
-
-.homeShowcaseSection .showcaseDetailButton .button{
-  min-width: 105px !important;
-  min-height: 36px !important;
-  padding: 7px 15px !important;
-  font-size: 13px !important;
-  border-radius: 999px !important;
-}
-
-/* MOBILE */
-@media (max-width:700px){
-  .homeShowcaseSection .showcaseOverlay{
-    padding: 16px 16px 14px !important;
-  }
-
-  .homeShowcaseSection .showcaseOverlayText{
-    max-width: 62% !important;
-  }
-
-  .homeShowcaseSection .showcaseOverlay h3{
-    font-size: 18px !important;
-  }
-
-  .homeShowcaseSection .showcaseOverlay p{
-    font-size: 10px !important;
-    line-height: 1.35 !important;
-  }
-
-  .homeShowcaseSection .showcaseDetailButton{
-    margin-top: 7px !important;
-  }
-
-  .homeShowcaseSection .showcaseDetailButton .button{
-    min-width: 92px !important;
-    min-height: 32px !important;
-    padding: 6px 12px !important;
-    font-size: 12px !important;
-  }
-}
-
-
-/* SHOWCASE — TEXT FULL WIDTH, BUTTON RIGHT */
-.homeShowcaseSection .showcaseOverlayText{
-  max-width: 100% !important;
-  width: 100% !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  text-align: left !important;
-}
-
-.homeShowcaseSection .showcaseOverlay h3,
-.homeShowcaseSection .showcaseOverlay p{
-  text-align: left !important;
-  max-width: 100% !important;
-}
-
-.homeShowcaseSection .showcaseDetailButton{
-  width: 100% !important;
-  display: flex !important;
-  justify-content: flex-end !important;
-  margin-top: 9px !important;
-}
-
-@media (max-width:700px){
-  .homeShowcaseSection .showcaseOverlayText{
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-
-  .homeShowcaseSection .showcaseDetailButton{
-    width: 100% !important;
-    justify-content: flex-end !important;
-  }
-}
-
-
-/* =========================================================
-   SHOWCASE IMAGE — SHOW FULL IMAGE, NO CROPPING
-   Frame size remains unchanged
-   ========================================================= */
-
-.homeShowcaseSection .showcaseImageWrap,
-.homeShowcaseSection .showcaseViewport,
-.homeShowcaseSection .showcaseSlide{
-  overflow: hidden !important;
-}
-
-.homeShowcaseSection .showcaseImageWrap{
-  background: #F7F4EF !important;
-}
-
-.homeShowcaseSection .showcaseImageWrap img,
-.homeShowcaseSection .showcaseImageLink img{
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  display: block !important;
-}
-
-/* Mobile — same frame size, full image visible */
-@media (max-width:700px){
   .homeShowcaseSection .showcaseImageWrap img,
   .homeShowcaseSection .showcaseImageLink img{
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-    object-position: center center !important;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    object-position:center center;
+  }
+
+  .homeShowcaseSection .showcaseOverlay{
+    padding:50px 16px 18px;
+  }
+
+  .homeShowcaseSection .showcaseOverlayText h3{
+    font-size:22px;
+  }
+
+  .homeShowcaseSection .showcaseOverlayText p{
+    font-size:13px;
+  }
+
+  .homeShowcaseSection .showcaseControl{
+    width:34px;
+    height:34px;
+  }
+
+  .homeShowcaseSection .showcaseControlLeft{
+    left:8px;
+  }
+
+  .homeShowcaseSection .showcaseControlRight{
+    right:8px;
+  }
+}
+
+@media (max-width:480px){
+
+  .homeShowcaseSection .showcaseImageWrap{
+    aspect-ratio:1000 / 667;
+  }
+
+  .homeShowcaseSection .showcaseOverlay{
+    padding:40px 14px 14px;
+  }
+
+  .homeShowcaseSection .showcaseDetailButton{
+    margin-top:10px;
   }
 }
 
