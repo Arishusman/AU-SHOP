@@ -1631,32 +1631,6 @@ html[data-theme="dark"] .notice {
 .showcaseArrowLeft{left:18px}
 .showcaseArrowRight{right:18px}
 
-.showcaseDots{
-  position:absolute;
-  left:50%;
-  bottom:14px;
-  transform:translateX(-50%);
-  z-index:6;
-  display:flex;
-  gap:7px;
-}
-
-.showcaseDots button{
-  width:8px;
-  height:8px;
-  padding:0;
-  border:0;
-  border-radius:50%;
-  background:rgba(255,255,255,.55);
-  cursor:pointer;
-}
-
-.showcaseDots button.active{
-  width:22px;
-  border-radius:10px;
-  background:#fff;
-}
-
 /* WhatsApp + Back to top */
 .floatingActions{
   position:fixed;
@@ -2105,75 +2079,6 @@ html[data-theme="dark"] .notice {
   border-color:var(--line);
 }
 
-.homeShowcaseSection{
-  scroll-margin-top:90px;
-}
-
-.showcaseSlider{
-  position:relative;
-  touch-action:pan-y;
-}
-
-.showcaseViewport{
-  overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:28px;
-  background:var(--surface);
-  box-shadow:var(--shadow);
-}
-
-.showcaseSlide{
-  width:100%;
-}
-
-
-
-.showcaseImageWrap img{
-  display:block;
-  width:100%;
-  height:min(62vw,520px);
-  min-height:320px;
-  object-fit:cover;
-}
-
-.showcaseImagePlaceholder{
-  min-height:320px;
-  display:grid;
-  place-items:center;
-  font-size:42px;
-  font-weight:800;
-  letter-spacing:.04em;
-}
-
-.showcaseOverlay{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:80px 28px 26px;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.68),
-    rgba(0,0,0,.18),
-    transparent
-  );
-  color:#fff;
-}
-
-.showcaseOverlay h3{
-  margin:0 0 7px;
-  font-size:clamp(26px,4vw,44px);
-  line-height:1.05;
-}
-
-.showcaseOverlay p{
-  max-width:650px;
-  margin:0;
-  font-size:16px;
-  line-height:1.6;
-  opacity:.94;
-}
-
 .showcaseBottom{
   display:flex;
   align-items:center;
@@ -2185,54 +2090,6 @@ html[data-theme="dark"] .notice {
 .showcaseSwipeHint{
   color:var(--muted);
   font-size:13px;
-}
-
-.showcaseControl{
-  position:absolute;
-  top:50%;
-  z-index:3;
-  width:46px;
-  height:46px;
-  display:grid;
-  place-items:center;
-  border:1px solid rgba(255,255,255,.7);
-  border-radius:50%;
-  background:rgba(255,255,255,.88);
-  color:var(--text);
-  box-shadow:0 8px 30px rgba(0,0,0,.12);
-  cursor:pointer;
-  transform:translateY(-50%);
-}
-
-.showcaseControlLeft{
-  left:14px;
-}
-
-.showcaseControlRight{
-  right:14px;
-}
-
-.showcaseDots{
-  display:flex;
-  justify-content:center;
-  gap:7px;
-  margin-top:14px;
-}
-
-.showcaseDot{
-  width:9px;
-  height:9px;
-  padding:0;
-  border:0;
-  border-radius:50%;
-  background:var(--line);
-  cursor:pointer;
-}
-
-.showcaseDot.active{
-  width:28px;
-  border-radius:999px;
-  background:var(--accent2);
 }
 
 .whySection{
@@ -2451,36 +2308,6 @@ html[data-theme="dark"] .notice {
 
   .heroActions .button{
     width:100%;
-  }
-
-  .showcaseImageWrap img{
-    height:420px;
-    min-height:420px;
-  }
-
-  .showcaseOverlay{
-    padding:90px 20px 20px;
-  }
-
-  .showcaseOverlay h3{
-    font-size:27px;
-  }
-
-  .showcaseOverlay p{
-    font-size:14px;
-  }
-
-  .showcaseControl{
-    width:40px;
-    height:40px;
-  }
-
-  .showcaseControlLeft{
-    left:8px;
-  }
-
-  .showcaseControlRight{
-    right:8px;
   }
 
   .showcaseBottom{
@@ -2771,64 +2598,6 @@ html[data-theme="dark"] .notice {
    SHOWCASE
    ========================= */
 
-.homeShowcaseSection{
-  margin-top:8px;
-}
-
-.showcaseSlider{
-  position:relative;
-  width:100%;
-  touch-action:pan-y;
-}
-
-.showcaseViewport{
-  width:100%;
-  overflow:hidden;
-  border-radius:24px;
-}
-
-.showcaseSlide{
-  width:100%;
-}
-
-
-
-.showcaseImageWrap img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
-}
-
-.showcaseOverlay{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:70px 24px 22px;
-  color:#fff;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.72),
-    rgba(0,0,0,.38) 45%,
-    transparent
-  );
-}
-
-.showcaseOverlay h3{
-  margin:0 0 5px;
-  font-size:28px;
-  line-height:1.15;
-  color:#fff;
-}
-
-.showcaseOverlay p{
-  margin:0;
-  font-size:15px;
-  line-height:1.5;
-  color:#fff;
-}
-
 .showcaseBottom{
   display:flex;
   align-items:center;
@@ -2845,55 +2614,6 @@ html[data-theme="dark"] .notice {
 .showcaseSwipeHint{
   color:var(--muted);
   font-size:12px;
-}
-
-.showcaseControl{
-  position:absolute;
-  top:45%;
-  z-index:5;
-  width:42px;
-  height:42px;
-  border:1px solid rgba(255,255,255,.65);
-  border-radius:50%;
-  background:rgba(255,255,255,.85);
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  box-shadow:0 8px 25px rgba(0,0,0,.12);
-}
-
-.showcaseControlLeft{
-  left:12px;
-}
-
-.showcaseControlRight{
-  right:12px;
-}
-
-.showcaseDots{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:7px;
-  margin-top:14px;
-}
-
-.showcaseDot{
-  width:8px;
-  height:8px;
-  padding:0;
-  border:0;
-  border-radius:50%;
-  background:var(--line);
-  cursor:pointer;
-}
-
-.showcaseDot.active{
-  width:28px;
-  border-radius:999px;
-  background:var(--accent2);
 }
 
 /* =========================
@@ -2988,39 +2708,12 @@ html[data-theme="dark"] .notice {
 
 @media (max-width:700px){
 
-  
-
-  .showcaseOverlay{
-    padding:65px 18px 18px;
-  }
-
-  .showcaseOverlay h3{
-    font-size:24px;
-  }
-
-  .showcaseOverlay p{
-    font-size:14px;
-  }
-
   .showcaseBottom{
     padding-top:10px;
   }
 
   .showcaseSwipeHint{
     font-size:11px;
-  }
-
-  .showcaseControl{
-    width:36px;
-    height:36px;
-  }
-
-  .showcaseControlLeft{
-    left:8px;
-  }
-
-  .showcaseControlRight{
-    right:8px;
   }
 
   #home-categories .catBanner{
@@ -3073,226 +2766,12 @@ html[data-theme="dark"] .notice {
 /* =========================================================
    HOME SHOWCASE — CLEAN FINAL VERSION
    ========================================================= */
-.homeShowcaseSection{
-  width:100%;
-  margin-top:8px;
-}
-
-.homeShowcaseSection .showcaseSlider{
-  position:relative;
-  width:100%;
-  touch-action:pan-y;
-}
-
-.homeShowcaseSection .showcaseViewport{
-  width:100%;
-  overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:var(--surface);
-  box-shadow:var(--shadow);
-}
-
-.homeShowcaseSection .showcaseSlide{
-  width:100%;
-}
-
-.homeShowcaseSection .showcaseImageWrap{
-  position:relative !important;
-  width:100%;
-  aspect-ratio:1000 / 667;
-  height:auto;
-  min-height:0;
-  overflow:hidden;
-  background:#F7F4EF;
-}
-
-.homeShowcaseSection .showcaseImageLink{
-  position:absolute;
-  inset:0;
-  z-index:1;
-  display:block;
-  width:100%;
-  height:100%;
-}
-
-.homeShowcaseSection .showcaseImageWrap img,
-.homeShowcaseSection .showcaseImageLink img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:contain;
-  object-position:center center;
-}
-
-.homeShowcaseSection .showcaseImagePlaceholder{
-  width:100%;
-  height:100%;
-  min-height:320px;
-  display:grid;
-  place-items:center;
-  font-size:42px;
-  font-weight:800;
-  letter-spacing:.04em;
-}
-
-.homeShowcaseSection .showcaseOverlay{
-  position:absolute;
-  inset:0;
-  z-index:2;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  align-items:flex-start;
-  padding:80px 26px 24px;
-  color:#fff;
-  pointer-events:none;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.68) 0%,
-    rgba(0,0,0,.32) 35%,
-    rgba(0,0,0,0) 70%
-  );
-}
-
-.homeShowcaseSection .showcaseOverlayText{
-  width:100%;
-  max-width:100%;
-  margin:0;
-  text-align:left;
-}
-
-.homeShowcaseSection .showcaseOverlayText h3{
-  margin:0 0 6px;
-  font-size:clamp(20px,3vw,34px);
-  line-height:1.1;
-}
-
-.homeShowcaseSection .showcaseOverlayText p{
-  margin:0;
-  max-width:680px;
-  font-size:14px;
-  line-height:1.5;
-}
-
-.homeShowcaseSection .showcaseDetailButton{
-  margin-top:14px;
-  pointer-events:auto;
-}
-
-.homeShowcaseSection .showcaseDetailButton .button{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.homeShowcaseSection .showcaseControl{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:5;
-  width:42px;
-  height:42px;
-  border:1px solid rgba(255,255,255,.45);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:rgba(0,0,0,.35);
-  color:#fff;
-  cursor:pointer;
-  backdrop-filter:blur(8px);
-}
-
-.homeShowcaseSection .showcaseControlLeft{
-  left:16px;
-}
-
-.homeShowcaseSection .showcaseControlRight{
-  right:16px;
-}
-
-.homeShowcaseSection .showcaseDots{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:7px;
-  margin-top:14px;
-}
-
-.homeShowcaseSection .showcaseDot{
-  width:8px;
-  height:8px;
-  padding:0;
-  border:0;
-  border-radius:50%;
-  background:rgba(0,0,0,.25);
-  cursor:pointer;
-}
-
-.homeShowcaseSection .showcaseDot.active{
-  width:24px;
-  border-radius:999px;
-  background:currentColor;
-}
 
 /* Mobile */
 @media (max-width:700px){
-
-  .homeShowcaseSection .showcaseViewport{
-    border-radius:18px;
-  }
-
-  .homeShowcaseSection .showcaseImageWrap{
-    aspect-ratio:1000 / 667;
-  }
-
-  .homeShowcaseSection .showcaseImageWrap img,
-  .homeShowcaseSection .showcaseImageLink img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    object-position:center center;
-  }
-
-  .homeShowcaseSection .showcaseOverlay{
-    padding:50px 16px 18px;
-  }
-
-  .homeShowcaseSection .showcaseOverlayText h3{
-    font-size:22px;
-  }
-
-  .homeShowcaseSection .showcaseOverlayText p{
-    font-size:13px;
-  }
-
-  .homeShowcaseSection .showcaseControl{
-    width:34px;
-    height:34px;
-  }
-
-  .homeShowcaseSection .showcaseControlLeft{
-    left:8px;
-  }
-
-  .homeShowcaseSection .showcaseControlRight{
-    right:8px;
-  }
 }
 
 @media (max-width:480px){
-
-  .homeShowcaseSection .showcaseImageWrap{
-    aspect-ratio:1000 / 667;
-  }
-
-  .homeShowcaseSection .showcaseOverlay{
-    padding:40px 14px 14px;
-  }
-
-  .homeShowcaseSection .showcaseDetailButton{
-    margin-top:10px;
-  }
 }
 
 
@@ -3300,63 +2779,102 @@ html[data-theme="dark"] .notice {
    HOME SHOWCASE — IMAGE RATIO FIX
    ========================================================= */
 
-.homeShowcaseSection .showcaseViewport{
-  width:100%;
-  overflow:hidden;
+@media (max-width:700px){
 }
 
-.homeShowcaseSection .showcaseSlide{
-  width:100%;
-  overflow:hidden;
+/* HOME SHOWCASE — SINGLE CLEAN IMAGE RULE */
+
+.homeShowcaseSection {
+  width: 100%;
+  margin-top: 8px;
 }
 
-.homeShowcaseSection .showcaseImageWrap{
-  position:relative !important;
-  width:100% !important;
-  aspect-ratio:1536 / 857 !important;
-  height:auto !important;
-  min-height:0 !important;
-  overflow:hidden !important;
-  background:#F7F4EF;
+.homeShowcaseSection .showcaseSlider {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y;
 }
 
-.homeShowcaseSection .showcaseImageLink{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  display:block !important;
+.homeShowcaseSection .showcaseViewport,
+.homeShowcaseSection .showcaseSlide {
+  width: 100%;
+  overflow: hidden;
+}
+
+.homeShowcaseSection .showcaseImageWrap {
+  position: relative !important;
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: 1536 / 857 !important;
+  overflow: hidden !important;
+  background: #F7F4EF;
+  border-radius: 22px;
+}
+
+.homeShowcaseSection .showcaseImageLink {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .homeShowcaseSection .showcaseImageWrap img,
-.homeShowcaseSection .showcaseImageLink img{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  max-width:none !important;
-  max-height:none !important;
-  margin:0 !important;
-  padding:0 !important;
-  display:block !important;
-  object-fit:cover !important;
-  object-position:center center !important;
+.homeShowcaseSection .showcaseImageLink img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: center center !important;
 }
 
-@media (max-width:700px){
-  .homeShowcaseSection .showcaseImageWrap{
-    aspect-ratio:1536 / 857 !important;
-  }
+/* Banner ke upar duplicate text/button nahi dikhayenge */
 
-  .homeShowcaseSection .showcaseImageWrap img,
-  .homeShowcaseSection .showcaseImageLink img{
-    position:absolute !important;
-    inset:0 !important;
-    width:100% !important;
-    height:100% !important;
-    margin:0 !important;
-    object-fit:cover !important;
-    object-position:center center !important;
-  }
+.homeShowcaseSection .showcaseOverlay {
+  display: none !important;
 }
+
+.homeShowcaseSection .showcaseControl {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  transform: translateY(-50%);
+}
+
+.homeShowcaseSection .showcaseControlLeft {
+  left: 12px;
+}
+
+.homeShowcaseSection .showcaseControlRight {
+  right: 12px;
+}
+
+.homeShowcaseSection .showcaseDots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.homeShowcaseSection .showcaseDot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.homeShowcaseSection .showcaseDot.active {
+  width: 22px;
+  border-radius: 10px;
+}
+
 
