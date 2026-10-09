@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import {Search, X} from 'lucide-react';
-import {useEffect, useState} from 'react';
-import Link from 'next/link';
-import {getCached, setCached} from '@/lib/liveCache';
+import { Search, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { getCached, setCached } from "@/lib/liveCache";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 type Product = {
   id: string | number;
@@ -17,16 +17,16 @@ type Product = {
 };
 
 export function SearchBar() {
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState("");
   const [products, setProducts] = useState<Product[]>(() => {
-    return getCached<Product[]>('products') || [];
+    return getCached<Product[]>("products") || [];
   });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
-    const cached = getCached<Product[]>('products');
+    const cached = getCached<Product[]>("products");
 
     if (cached?.length && !cancelled) {
       setProducts(cached);
@@ -37,10 +37,10 @@ export function SearchBar() {
 
       try {
         const res = await fetch(`${API_URL}/api/products`, {
-          cache: 'no-store',
+          cache: "no-store",
         });
 
-        if (!res.ok) throw new Error('Products API failed');
+        if (!res.ok) throw new Error("Products API failed");
 
         const json = await res.json();
 
@@ -54,7 +54,7 @@ export function SearchBar() {
 
         if (!cancelled) {
           setProducts(list);
-          setCached('products', list);
+          setCached("products", list);
         }
       } catch {
         // Keep cached products if API fails.
@@ -77,8 +77,8 @@ export function SearchBar() {
   const hits = query
     ? products
         .filter((p) => {
-          const name = String(p.name || p.title || '').toLowerCase();
-          const use = String(p.use || '').toLowerCase();
+          const name = String(p.name || p.title || "").toLowerCase();
+          const use = String(p.use || "").toLowerCase();
 
           return name.includes(query) || use.includes(query);
         })
@@ -99,8 +99,8 @@ export function SearchBar() {
         {q && (
           <button
             className="iconbtn"
-            style={{width: 34, height: 34}}
-            onClick={() => setQ('')}
+            style={{ width: 34, height: 34 }}
+            onClick={() => setQ("")}
           >
             <X size={16} />
           </button>
@@ -110,33 +110,37 @@ export function SearchBar() {
       {q && (
         <div className="suggestions">
           {loading && !products.length ? (
-            <div style={{padding: 18}} className="muted">
+            <div style={{ padding: 18 }} className="muted">
               Searching products...
             </div>
           ) : hits.length ? (
             hits.map((p) => {
-              const slug = p.slug || String(p.id);
+              const slug =
+                p.slug ||
+                (p as any).handle ||
+                String(p.name || "")
+                  .toLowerCase()
+                  .trim()
+                  .replace(/[^a-z0-9]+/g, "-")
+                  .replace(/^-+|-+$/g, "");
               const price = Number(p.price || 0);
 
               return (
                 <Link
                   key={p.id}
                   href={`/product/${slug}`}
-                  onClick={() => setQ('')}
+                  onClick={() => setQ("")}
                 >
-                  {p.name || p.title || 'Unnamed product'}
+                  {p.name || p.title || "Unnamed product"}
 
-                  <span
-                    className="muted"
-                    style={{float: 'right'}}
-                  >
+                  <span className="muted" style={{ float: "right" }}>
                     Rs {price.toLocaleString()}
                   </span>
                 </Link>
               );
             })
           ) : (
-            <div style={{padding: 18}} className="muted">
+            <div style={{ padding: 18 }} className="muted">
               No record found
             </div>
           )}
